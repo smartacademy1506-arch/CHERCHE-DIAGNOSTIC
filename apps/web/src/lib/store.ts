@@ -62,10 +62,20 @@ export const onHistoryChange = (l: () => void) => { historyListeners.add(l); ret
 export async function getHistory(): Promise<History> {
   return { ...emptyHistory(), ...((await kv.get<History>(historyKey())) ?? {}) };
 }
+/** Lecture et écriture dans UNE transaction : deux mises à jour rapprochées ne peuvent pas s'écraser. */
 export async function updateHistory(fn: (h: History) => void): Promise<History> {
-  const h = await getHistory();
-  fn(h);
-  await kv.set(historyKey(), h);
+  const d = await open();
+  const key = historyKey();
+  const h = await new Promise<History>((resolve, reject) => {
+    const t = d.transaction('kv', 'readwrite');
+    const st = t.objectStore('kv');
+    let out: History = emptyHistory();
+    const req = st.get(key);
+    req.onsuccess = () => { out = { ...emptyHistory(), ...(req.result ?? {}) }; fn(out); st.put(out, key); };
+    t.oncomplete = () => resolve(out);
+    t.onerror = () => reject(t.error);
+    t.onabort = () => reject(t.error);
+  });
   historyListeners.forEach((l) => l());
   return h;
 }

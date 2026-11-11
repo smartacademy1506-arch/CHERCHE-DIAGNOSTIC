@@ -175,6 +175,13 @@ await step('mots mêlés : une sélection fausse ne valide rien ; toucher début
 });
 
 await step('mots mêlés : la partie interrompue reprend avec les mots déjà trouvés', async () => {
+  // La reprise suppose la progression écrite sur l'appareil : on attend la fin de l'écriture avant de recharger.
+  await page.waitForFunction(async (pid) => {
+    const idb = await new Promise((r) => { const q = indexedDB.open('cherche-diagnostic'); q.onsuccess = () => r(q.result); });
+    const h = await new Promise((r) => { const q = idb.transaction('kv').objectStore('kv').get('history:guest'); q.onsuccess = () => r(q.result); });
+    idb.close();
+    return h?.puzzles?.[pid]?.found?.length === 2;
+  }, puzzle.id, { timeout: 5000 });
   await page.reload();
   await page.getByTestId('ws-grid').waitFor();
   await expectText(page, `2 / ${puzzle.puzzle_words.length} trouvés`);
