@@ -17,7 +17,7 @@ Légende : ✅ fait et testé · 🟡 fait, test incomplet · ⬜ non fait
 | 11. Administration | 🟡 | Statistiques, statuts, import, glossaire, offres, devises, utilisateurs, rôles, paiements : écrans faits, **non testés avec un compte administrateur réel**. Édition des QCM, médias, programmes : ⬜. |
 | 12. Abonnements et paiements | 🟡 | Offres, devises, demande de paiement, confirmation manuelle. Prestataire de paiement : ⬜. |
 | 13. IA pédagogique | ⬜ | Non commencé (l'application n'en dépend pas). |
-| 14. Tests, optimisation, déploiement | 🟡 | 15 scénarios de bout en bout réussis en local. Test de charge : ⬜. Déploiement : voir compte rendu. |
+| 14. Tests, optimisation, déploiement | 🟡 | 7 tests du moteur et 15 scénarios de bout en bout réussis. Revues médicale et de sécurité indépendantes faites (docs/06_VALIDATION/REVUES_INDEPENDANTES.md). Déployé sur Vercel. Test de charge : ⬜. |
 
 ## Non fait dans ce MVP
 

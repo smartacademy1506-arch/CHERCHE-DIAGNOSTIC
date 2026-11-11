@@ -1,6 +1,6 @@
 // Accès aux données pédagogiques (réseau d'abord, copie locale en secours).
 import { cached, kv } from './store';
-import { db, getSession } from './supabase';
+import { db, getSession, onSignOut } from './supabase';
 import type { Placement } from './wordsearch/generator';
 
 export type I18n = Record<string, string>;
@@ -99,3 +99,10 @@ export async function removeDownload(chapterId: string): Promise<void> {
   await kv.set('downloads', ((await kv.get<string[]>('downloads')) ?? []).filter((x) => x !== chapterId));
 }
 export const listDownloads = async () => (await kv.get<string[]>('downloads')) ?? [];
+
+/** À la déconnexion : les chapitres et corrigés mis en cache ne doivent pas rester lisibles sur l'appareil. */
+export async function purgeContentCache(): Promise<void> {
+  for (const k of await kv.keys()) if (typeof k === 'string' && k.startsWith('chapter:')) await kv.del(k);
+  await kv.del('downloads');
+}
+onSignOut(purgeContentCache);

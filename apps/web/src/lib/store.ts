@@ -87,8 +87,12 @@ export async function enqueue(kind: OutboxKind, payload: any, id: string = uuid(
 async function send(item: OutboxItem, userId: string): Promise<void> {
   const p = item.payload;
   switch (item.kind) {
-    case 'quiz':
-      await db.rpc('submit_quiz_attempt', p); break;
+    case 'quiz': {
+      // Une réponse « non enregistrée » signifie que l'appel est parti sans session valide : on garde l'élément.
+      const r = await db.rpc<{ stored?: boolean }>('submit_quiz_attempt', p);
+      if (!r?.stored) throw new ApiError(401, 'not_stored');
+      break;
+    }
     case 'puzzle':
       await db.upsert('puzzle_sessions', { ...p, user_id: userId }); break;
     case 'open':
@@ -115,6 +119,7 @@ export function flushOutbox(): Promise<number> {
       for (const item of items.sort((a, b) => a.created_at.localeCompare(b.created_at))) {
         if (item.user_id !== s.user.id || item.error) { left++; continue; } // autre compte ou erreur définitive : conservé, jamais supprimé en silence
         try {
+          if (getSession()?.user.id !== s.user.id) { left++; break; } // session expirée pendant l'envoi
           await send(item, s.user.id);
           await tx('outbox', 'readwrite', (st) => st.delete(item.id));
         } catch (e) {

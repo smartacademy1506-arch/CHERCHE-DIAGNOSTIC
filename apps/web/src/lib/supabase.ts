@@ -27,6 +27,9 @@ function setSession(s: Session | null) {
   listeners.forEach((l) => l(s));
 }
 export const getSession = () => session;
+/** Actions à exécuter à la déconnexion (purge des contenus payants mis en cache, etc.). */
+const signOutHooks = new Set<() => unknown>();
+export const onSignOut = (h: () => unknown) => { signOutHooks.add(h); };
 export function onSessionChange(l: (s: Session | null) => void): () => void { listeners.add(l); return () => listeners.delete(l); }
 
 async function call(path: string, init: RequestInit & { token?: string | null } = {}): Promise<any> {
@@ -80,6 +83,7 @@ export const auth = {
   async signOut(): Promise<void> {
     try { await call('/auth/v1/logout', { method: 'POST' }); } catch { /* déconnexion locale malgré tout */ }
     setSession(null);
+    signOutHooks.forEach((h) => { void h(); });
   },
   recover(email: string, redirectTo: string): Promise<void> {
     return call('/auth/v1/recover?redirect_to=' + encodeURIComponent(redirectTo), { method: 'POST', token: null, body: JSON.stringify({ email }) });
@@ -94,6 +98,8 @@ export const auth = {
     if (!h.includes('access_token=')) return null;
     const p = new URLSearchParams(h);
     const access_token = p.get('access_token')!;
+    // Retire le jeton de l'adresse et de l'historique du navigateur.
+    history.replaceState(null, '', location.pathname + location.search + '#/');
     try {
       const user = await call('/auth/v1/user', { token: access_token });
       setSession({ access_token, refresh_token: p.get('refresh_token') || '', expires_at: Math.floor(Date.now() / 1000) + Number(p.get('expires_in') || 3600), user: { id: user.id, email: user.email } });

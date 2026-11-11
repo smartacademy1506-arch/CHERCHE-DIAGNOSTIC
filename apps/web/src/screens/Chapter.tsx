@@ -117,7 +117,11 @@ export function Lesson({ id }: { id: string }) {
             <section>
               <h2>{t('ch.references')}</h2>
               <ol className="refs">
-                {b.lesson.source_refs.map((r, i) => <li key={i}>{r.citation}{/^https:\/\//.test(r.url) && <> — <a href={r.url} target="_blank" rel="noopener noreferrer">{new URL(r.url).hostname}</a></>}</li>)}
+                {b.lesson.source_refs.map((r, i) => {
+                  let host = '';
+                  try { if (/^https:\/\//.test(r.url)) host = new URL(r.url).hostname; } catch { /* lien mal formé : citation seule */ }
+                  return <li key={i}>{r.citation}{host && <> — <a href={r.url} target="_blank" rel="noopener noreferrer">{host}</a></>}</li>;
+                })}
               </ol>
             </section>
           )}

@@ -17,7 +17,8 @@ Documentation : [audit](docs/06_VALIDATION/AUDIT_DOCUMENTAIRE.md) ·
 [cartographie pédagogique](docs/06_VALIDATION/CARTOGRAPHIE_PEDAGOGIQUE.md) ·
 [architecture et coûts](docs/04_ARCHITECTURE/ARCHITECTURE_TECHNIQUE.md) ·
 [base de données](docs/04_ARCHITECTURE/SCHEMA_BASE_DONNEES.md) ·
-[plan et état d'avancement](docs/04_ARCHITECTURE/PLAN_DEVELOPPEMENT.md)
+[plan et état d'avancement](docs/04_ARCHITECTURE/PLAN_DEVELOPPEMENT.md) ·
+[revues indépendantes](docs/06_VALIDATION/REVUES_INDEPENDANTES.md)
 
 Le contenu médical actuel est provisoire et en cours de validation pédagogique. L'application est un outil
 d'apprentissage, pas un dispositif de diagnostic.
