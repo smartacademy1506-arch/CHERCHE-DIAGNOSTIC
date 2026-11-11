@@ -131,7 +131,7 @@ td select { min-height: 38px; width: auto; }
 .prose { display: flex; flex-direction: column; gap: .8rem; font-size: 1.02rem; line-height: 1.7; }
 .prose h3 { margin-top: .6rem; font-size: 1.1rem; } .prose ul { margin: 0; padding-left: 1.2rem; }
 .lesson { display: flex; flex-direction: column; gap: 1.25rem; }
-.keypoints { border-left: 4px solid var(--blue-700); }
+.keypoints { background: var(--blue-50); border-color: var(--blue-100); box-shadow: none; }
 .refs { font-size: .85rem; color: var(--ink-2); padding-left: 1.2rem; margin: 0; overflow-wrap: anywhere; }
 .glossary { margin: 0; display: flex; flex-direction: column; gap: .6rem; }
 .glossary > div { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: .75rem 1rem; }
@@ -168,7 +168,7 @@ td select { min-height: 38px; width: auto; }
 .mark { flex: none; width: 22px; height: 22px; display: grid; place-items: center; border: 1.5px solid #b6c0cf; border-radius: 6px; margin-top: 1px; color: var(--blue-700); }
 .mark-radio { border-radius: 50%; } .is-static .mark { border: 0; } .is-good .mark { color: var(--green); } .is-bad .mark { color: var(--red); }
 .correction { display: flex; flex-direction: column; gap: .6rem; }
-.explain { font-size: .92rem; color: var(--ink-2); border-left: 3px solid var(--blue-100); padding-left: .75rem; }
+.explain { font-size: .92rem; color: var(--ink-2); background: var(--bg); border-radius: 10px; padding: .65rem .8rem; }
 .flash { min-height: 230px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1rem; text-align: center; padding: 1.5rem; }
 .flash-front { font-size: 1.4rem; font-weight: 800; color: var(--blue-900); } .flash-back { color: var(--ink); border-top: 1px solid var(--line); padding-top: 1rem; }
 .rate { display: grid; grid-template-columns: repeat(4, 1fr); gap: .4rem; } .rate .btn { padding: .5rem .3rem; font-size: .88rem; }
