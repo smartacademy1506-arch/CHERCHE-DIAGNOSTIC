@@ -1,0 +1,909 @@
+{
+  "slug": "physiologie-cellulaire",
+  "order": 1,
+  "title": {
+    "fr": "Physiologie cellulaire et membranaire",
+    "en": "Cell and Membrane Physiology"
+  },
+  "description": {
+    "fr": "De la membrane plasmique à la contraction musculaire : transports membranaires, osmose et compartiments liquidiens, potentiels de membrane, transmission synaptique et couplage excitation-contraction.",
+    "en": "From the plasma membrane to muscle contraction: membrane transport, osmosis and body fluid compartments, membrane potentials, synaptic transmission and excitation-contraction coupling."
+  },
+  "objectives": [
+    {
+      "fr": "Décrire l'organisation de la membrane plasmique et distinguer diffusion simple, diffusion facilitée, transport actif primaire et transport actif secondaire.",
+      "en": "Describe the organization of the plasma membrane and distinguish simple diffusion, facilitated diffusion, primary active transport and secondary active transport."
+    },
+    {
+      "fr": "Différencier osmolarité et tonicité, et prédire les mouvements d'eau entre les compartiments liquidiens après une perfusion ou une perte liquidienne.",
+      "en": "Differentiate osmolarity from tonicity, and predict water shifts between body fluid compartments after an infusion or a fluid loss."
+    },
+    {
+      "fr": "Expliquer l'origine du potentiel de repos à partir des gradients ioniques, des perméabilités membranaires et de la Na+/K+-ATPase.",
+      "en": "Explain the origin of the resting membrane potential from ionic gradients, membrane permeabilities and the Na+/K+-ATPase."
+    },
+    {
+      "fr": "Décrire les phases du potentiel d'action, leurs bases ioniques, les périodes réfractaires et les déterminants de la vitesse de conduction.",
+      "en": "Describe the phases of the action potential, their ionic basis, the refractory periods and the determinants of conduction velocity."
+    },
+    {
+      "fr": "Détailler la transmission à la jonction neuromusculaire et le couplage excitation-contraction, et en déduire le mécanisme des principales atteintes cliniques et toxiques.",
+      "en": "Detail transmission at the neuromuscular junction and excitation-contraction coupling, and deduce the mechanism of the main clinical and toxic disorders."
+    }
+  ],
+  "summary": {
+    "fr": "## Membrane et transports\n\nLa membrane plasmique est une **bicouche de phospholipides** fluide, enrichie en cholestérol et en protéines (canaux, transporteurs, pompes, récepteurs). Les gaz et les petites molécules liposolubles la traversent par **diffusion simple** ; les ions et les solutés polaires exigent une protéine. La diffusion facilitée (par exemple les transporteurs GLUT) suit le gradient et est saturable. Le **transport actif primaire** consomme directement l'ATP : la Na+/K+-ATPase expulse 3 Na+ et fait entrer 2 K+ par ATP hydrolysé. Le **transport actif secondaire** exploite le gradient de sodium ainsi créé : symport (SGLT, Na+-glucose) ou antiport (échangeur Na+/Ca2+).\n\n## Eau, osmose et compartiments\n\nL'eau représente environ 60 % du poids d'un homme adulte (un peu moins chez la femme et le sujet âgé, davantage chez le nourrisson) : deux tiers sont intracellulaires, un tiers extracellulaire, lui-même réparti entre interstitium (environ trois quarts) et plasma (un quart). Le liquide extracellulaire est riche en Na+ (135–145 mmol/L) et pauvre en K+ (3,5–5 mmol/L) ; c'est l'inverse dans la cellule. L'osmolalité plasmatique normale est de 275–295 mOsm/kg. L'**osmolarité** compte toutes les particules dissoutes ; la **tonicité** ne tient compte que des solutés qui ne franchissent pas la membrane et détermine donc le volume cellulaire. Une solution d'urée peut ainsi être isosmotique mais hypotonique.\n\n## Potentiel de repos et potentiel d'action\n\nAu repos, la membrane est surtout perméable au K+ (canaux de fuite) : le potentiel de repos (environ −70 mV dans le neurone, −90 mV dans la fibre musculaire squelettique) est proche du potentiel d'équilibre du K+. Les gradients sont entretenus par la Na+/K+-ATPase, dont la contribution électrogène directe est faible. Quand la dépolarisation atteint le **seuil** (environ −55 mV), l'ouverture des canaux Na+ voltage-dépendants produit une dépolarisation explosive, de type tout ou rien. L'**inactivation** de ces canaux et l'ouverture retardée des canaux K+ assurent la repolarisation, puis une brève hyperpolarisation. L'inactivation explique la période réfractaire absolue et la propagation à sens unique. La myéline permet une conduction saltatoire rapide, d'un nœud de Ranvier au suivant.\n\n## Synapse et jonction neuromusculaire\n\nÀ la terminaison du motoneurone, le potentiel d'action ouvre des canaux Ca2+ voltage-dépendants ; l'entrée de calcium déclenche l'exocytose de l'**acétylcholine** grâce aux protéines SNARE. L'acétylcholine se fixe sur les récepteurs nicotiniques de la plaque motrice, canaux cationiques dont l'ouverture crée un potentiel de plaque normalement supérieur au seuil. L'acétylcholinestérase met fin au signal. Cette chaîne est la cible de la toxine botulique (libération), des curares et des auto-anticorps de la myasthénie (récepteur), ainsi que des organophosphorés (enzyme).\n\n## Couplage excitation-contraction\n\nLe potentiel d'action musculaire gagne les **tubules T**, où le récepteur des dihydropyridines, capteur de voltage, ouvre mécaniquement le récepteur de la ryanodine (RyR1) du réticulum sarcoplasmique. Le Ca2+ libéré se lie à la troponine C, déplace la tropomyosine et autorise les ponts actine-myosine. L'ATP est requis pour détacher la myosine de l'actine et pour repomper le calcium dans le réticulum (pompe SERCA), ce qui permet la relaxation.",
+    "en": "## Membrane and transport\n\nThe plasma membrane is a fluid **phospholipid bilayer** enriched with cholesterol and proteins (channels, carriers, pumps, receptors). Gases and small lipid-soluble molecules cross it by **simple diffusion**; ions and polar solutes need a protein. Facilitated diffusion (for example GLUT carriers) runs down the gradient and is saturable. **Primary active transport** uses ATP directly: the Na+/K+-ATPase extrudes 3 Na+ and takes up 2 K+ for each ATP hydrolysed. **Secondary active transport** harnesses the resulting sodium gradient: symport (SGLT, Na+-glucose) or antiport (Na+/Ca2+ exchanger).\n\n## Water, osmosis and compartments\n\nWater makes up about 60% of the body weight of an adult man (slightly less in women and older people, more in infants): two thirds are intracellular and one third extracellular, the latter split between the interstitium (about three quarters) and plasma (one quarter). Extracellular fluid is rich in Na+ (135–145 mmol/L) and poor in K+ (3.5–5 mmol/L); the reverse holds inside the cell. Normal plasma osmolality is 275–295 mOsm/kg. **Osmolarity** counts every dissolved particle; **tonicity** only takes into account solutes that cannot cross the membrane and therefore sets cell volume. A urea solution can thus be isosmotic yet hypotonic.\n\n## Resting potential and action potential\n\nAt rest the membrane is mainly permeable to K+ (leak channels): the resting potential (about −70 mV in neurons, −90 mV in skeletal muscle fibres) lies close to the K+ equilibrium potential. The gradients are maintained by the Na+/K+-ATPase, whose direct electrogenic contribution is small. When depolarization reaches **threshold** (about −55 mV), opening of voltage-gated Na+ channels produces an explosive, all-or-none depolarization. **Inactivation** of these channels and delayed opening of K+ channels bring about repolarization, followed by a brief hyperpolarization. Inactivation accounts for the absolute refractory period and for one-way propagation. Myelin allows fast saltatory conduction from one node of Ranvier to the next.\n\n## Synapse and neuromuscular junction\n\nAt the motor nerve terminal, the action potential opens voltage-gated Ca2+ channels; calcium entry triggers exocytosis of **acetylcholine** through SNARE proteins. Acetylcholine binds nicotinic receptors on the motor end plate, cation channels whose opening generates an end-plate potential that normally exceeds threshold. Acetylcholinesterase ends the signal. This chain is the target of botulinum toxin (release), of curare-like drugs and of the autoantibodies of myasthenia gravis (receptor), and of organophosphates (enzyme).\n\n## Excitation-contraction coupling\n\nThe muscle action potential spreads into the **T tubules**, where the dihydropyridine receptor, a voltage sensor, mechanically opens the ryanodine receptor (RyR1) of the sarcoplasmic reticulum. The released Ca2+ binds troponin C, shifts tropomyosin and allows actin-myosin cross-bridges to form. ATP is required to detach myosin from actin and to pump calcium back into the reticulum (SERCA pump), which permits relaxation."
+  },
+  "key_points": [
+    {
+      "fr": "La Na+/K+-ATPase échange 3 Na+ sortants contre 2 K+ entrants par ATP ; elle entretient les gradients qui alimentent les transports actifs secondaires et l'excitabilité.",
+      "en": "The Na+/K+-ATPase exchanges 3 outgoing Na+ for 2 incoming K+ per ATP; it maintains the gradients that drive secondary active transport and excitability."
+    },
+    {
+      "fr": "Eau totale ≈ 60 % du poids corporel : 2/3 intracellulaire, 1/3 extracellulaire (3/4 interstitiel, 1/4 plasmatique) ; un soluté isotonique reste dans le secteur extracellulaire.",
+      "en": "Total body water ≈ 60% of body weight: 2/3 intracellular, 1/3 extracellular (3/4 interstitial, 1/4 plasma); an isotonic solution stays in the extracellular compartment."
+    },
+    {
+      "fr": "La tonicité dépend uniquement des solutés non diffusibles : une solution isosmotique d'urée est hypotonique et fait gonfler les cellules.",
+      "en": "Tonicity depends only on non-penetrating solutes: an isosmotic urea solution is hypotonic and makes cells swell."
+    },
+    {
+      "fr": "Le potentiel de repos est proche du potentiel d'équilibre du K+ parce que la membrane au repos est surtout perméable au K+ ; la kaliémie le modifie donc fortement.",
+      "en": "The resting potential lies close to the K+ equilibrium potential because the resting membrane is mostly permeable to K+; plasma potassium therefore strongly affects it."
+    },
+    {
+      "fr": "L'inactivation des canaux Na+ voltage-dépendants explique la période réfractaire absolue ; myéline et gros diamètre axonal accélèrent la conduction.",
+      "en": "Inactivation of voltage-gated Na+ channels explains the absolute refractory period; myelin and a large axon diameter speed up conduction."
+    },
+    {
+      "fr": "Dans le muscle squelettique, le récepteur des dihydropyridines ouvre mécaniquement RyR1 ; le Ca2+ se lie à la troponine C et l'ATP est nécessaire à la contraction comme à la relaxation.",
+      "en": "In skeletal muscle the dihydropyridine receptor mechanically opens RyR1; Ca2+ binds troponin C, and ATP is needed for both contraction and relaxation."
+    }
+  ],
+  "terms": [
+    {
+      "fr": "BICOUCHE",
+      "en": "BILAYER",
+      "definition": {
+        "fr": "Double feuillet de lipides amphiphiles formant la trame de la membrane plasmique : têtes hydrophiles vers les milieux aqueux, queues hydrophobes au centre, d'où une barrière aux ions et aux solutés polaires.",
+        "en": "Double sheet of amphipathic lipids forming the framework of the plasma membrane: hydrophilic heads face the aqueous media and hydrophobic tails the core, creating a barrier to ions and polar solutes."
+      }
+    },
+    {
+      "fr": "PHOSPHOLIPIDE",
+      "en": "PHOSPHOLIPID",
+      "definition": {
+        "fr": "Lipide amphiphile comportant une tête phosphatée hydrophile et deux chaînes d'acides gras hydrophobes ; constituant principal des membranes cellulaires.",
+        "en": "Amphipathic lipid with a hydrophilic phosphate-containing head and two hydrophobic fatty acid chains; the main building block of cell membranes."
+      }
+    },
+    {
+      "fr": "CHOLESTÉROL",
+      "en": "CHOLESTEROL",
+      "definition": {
+        "fr": "Stérol inséré entre les phospholipides membranaires ; il module la fluidité de la membrane et réduit sa perméabilité aux petites molécules hydrosolubles.",
+        "en": "Sterol inserted between membrane phospholipids; it modulates membrane fluidity and lowers permeability to small water-soluble molecules."
+      }
+    },
+    {
+      "fr": "GRADIENT",
+      "en": "GRADIENT",
+      "definition": {
+        "fr": "Différence de concentration ou de potentiel électrique entre deux points ; pour un ion, la somme des deux forme le gradient électrochimique, force motrice de son mouvement passif.",
+        "en": "Difference in concentration or electrical potential between two points; for an ion, the two combine into the electrochemical gradient, the driving force for its passive movement."
+      }
+    },
+    {
+      "fr": "DIFFUSION",
+      "en": "DIFFUSION",
+      "definition": {
+        "fr": "Déplacement passif d'un soluté de la zone la plus concentrée vers la moins concentrée, sans dépense d'énergie métabolique ; son débit est proportionnel au gradient et à la surface d'échange (loi de Fick).",
+        "en": "Passive movement of a solute from a region of higher to lower concentration, without metabolic energy; its rate is proportional to the gradient and to the exchange surface area (Fick's law)."
+      }
+    },
+    {
+      "fr": "OSMOSE",
+      "en": "OSMOSIS",
+      "definition": {
+        "fr": "Mouvement net d'eau à travers une membrane semi-perméable, du compartiment le moins concentré en solutés non diffusibles vers le plus concentré.",
+        "en": "Net movement of water across a semipermeable membrane, from the compartment with the lower concentration of non-penetrating solutes to the one with the higher concentration."
+      }
+    },
+    {
+      "fr": "OSMOLARITÉ",
+      "en": "OSMOLARITY",
+      "definition": {
+        "fr": "Nombre de particules osmotiquement actives par litre de solution (mOsm/L). L'osmolalité plasmatique, exprimée par kilogramme d'eau, vaut normalement 275 à 295 mOsm/kg.",
+        "en": "Number of osmotically active particles per litre of solution (mOsm/L). Plasma osmolality, expressed per kilogram of water, is normally 275 to 295 mOsm/kg."
+      }
+    },
+    {
+      "fr": "TONICITÉ",
+      "en": "TONICITY",
+      "definition": {
+        "fr": "Effet d'une solution sur le volume cellulaire ; elle dépend seulement des solutés qui ne traversent pas la membrane (osmolarité efficace), comme le sodium, et non de l'urée.",
+        "en": "Effect of a solution on cell volume; it depends only on solutes that do not cross the membrane (effective osmolarity), such as sodium, and not on urea."
+      }
+    },
+    {
+      "fr": "HYPOTONIQUE",
+      "en": "HYPOTONIC",
+      "definition": {
+        "fr": "Se dit d'une solution dont l'osmolarité efficace est inférieure à celle du milieu intracellulaire : l'eau entre dans la cellule, qui gonfle.",
+        "en": "Describes a solution whose effective osmolarity is lower than that of the intracellular fluid: water enters the cell, which swells."
+      }
+    },
+    {
+      "fr": "HÉMOLYSE",
+      "en": "HEMOLYSIS",
+      "definition": {
+        "fr": "Rupture de la membrane des globules rouges avec libération d'hémoglobine ; elle survient notamment lorsque les hématies gonflent dans un milieu fortement hypotonique.",
+        "en": "Rupture of the red blood cell membrane with release of hemoglobin; it occurs in particular when red cells swell in a markedly hypotonic medium."
+      }
+    },
+    {
+      "fr": "AQUAPORINE",
+      "en": "AQUAPORIN",
+      "definition": {
+        "fr": "Protéine-canal membranaire sélective pour l'eau, qui augmente fortement la perméabilité hydrique ; l'aquaporine 2 du tube collecteur rénal est régulée par l'hormone antidiurétique.",
+        "en": "Membrane channel protein selective for water that greatly increases water permeability; aquaporin-2 in the renal collecting duct is regulated by antidiuretic hormone."
+      }
+    },
+    {
+      "fr": "SYMPORT",
+      "en": "SYMPORT",
+      "definition": {
+        "fr": "Cotransport de deux solutés dans le même sens par un même transporteur ; exemple : SGLT1, qui couple l'entrée du glucose à celle du sodium dans l'entérocyte.",
+        "en": "Cotransport of two solutes in the same direction by a single carrier; example: SGLT1, which couples glucose entry to sodium entry in the enterocyte."
+      }
+    },
+    {
+      "fr": "ANTIPORT",
+      "en": "ANTIPORT",
+      "definition": {
+        "fr": "Transport couplé de deux solutés en sens opposés par un même transporteur ; exemple : l'échangeur Na+/Ca2+, qui fait sortir un Ca2+ contre l'entrée de trois Na+.",
+        "en": "Coupled transport of two solutes in opposite directions by a single carrier; example: the Na+/Ca2+ exchanger, which extrudes one Ca2+ in exchange for three entering Na+."
+      }
+    },
+    {
+      "fr": "POMPE SODIUM",
+      "en": "SODIUM PUMP",
+      "definition": {
+        "fr": "Na+/K+-ATPase : transporteur actif primaire qui expulse 3 Na+ et fait entrer 2 K+ pour chaque ATP hydrolysé, entretenant les gradients ioniques et le volume cellulaire.",
+        "en": "Na+/K+-ATPase: primary active transporter that extrudes 3 Na+ and takes up 2 K+ for each ATP hydrolysed, maintaining ionic gradients and cell volume."
+      }
+    },
+    {
+      "fr": "DIGOXINE",
+      "en": "DIGOXIN",
+      "definition": {
+        "fr": "Glycoside cardiotonique qui inhibe la Na+/K+-ATPase ; la hausse du Na+ intracellulaire freine l'échangeur Na+/Ca2+, le Ca2+ s'accumule et la contractilité myocardique augmente.",
+        "en": "Cardiac glycoside that inhibits the Na+/K+-ATPase; the rise in intracellular Na+ slows the Na+/Ca2+ exchanger, Ca2+ accumulates and myocardial contractility increases."
+      }
+    },
+    {
+      "fr": "ENDOCYTOSE",
+      "en": "ENDOCYTOSIS",
+      "definition": {
+        "fr": "Capture de matériel extracellulaire par invagination de la membrane plasmique puis formation d'une vésicule intracellulaire ; elle comprend la phagocytose, la pinocytose et l'endocytose par récepteur.",
+        "en": "Uptake of extracellular material by invagination of the plasma membrane followed by formation of an intracellular vesicle; it includes phagocytosis, pinocytosis and receptor-mediated endocytosis."
+      }
+    },
+    {
+      "fr": "EXOCYTOSE",
+      "en": "EXOCYTOSIS",
+      "definition": {
+        "fr": "Libération du contenu d'une vésicule dans le milieu extracellulaire par fusion de sa membrane avec la membrane plasmique ; mécanisme de sécrétion des neurotransmetteurs et des hormones peptidiques.",
+        "en": "Release of vesicle contents into the extracellular medium by fusion of the vesicle membrane with the plasma membrane; the secretion mechanism for neurotransmitters and peptide hormones."
+      }
+    },
+    {
+      "fr": "INTERSTITIUM",
+      "en": "INTERSTITIUM",
+      "definition": {
+        "fr": "Espace situé entre les cellules et hors des vaisseaux ; son liquide représente environ les trois quarts du volume extracellulaire et a une composition ionique proche du plasma, mais pauvre en protéines.",
+        "en": "Space lying between cells and outside the vessels; its fluid makes up about three quarters of extracellular volume and has an ionic composition close to plasma but is poor in protein."
+      }
+    },
+    {
+      "fr": "PLASMA",
+      "en": "PLASMA",
+      "definition": {
+        "fr": "Partie liquide du sang, soit environ un quart du volume extracellulaire (près de 3,5 L chez un adulte de 70 kg) ; riche en protéines qui exercent la pression oncotique.",
+        "en": "Liquid part of blood, about one quarter of extracellular volume (close to 3.5 L in a 70-kg adult); rich in proteins that exert oncotic pressure."
+      }
+    },
+    {
+      "fr": "ŒDÈME",
+      "en": "EDEMA",
+      "definition": {
+        "fr": "Accumulation excessive de liquide dans l'interstitium, liée à une hausse de la pression hydrostatique capillaire, une baisse de la pression oncotique, une hyperperméabilité capillaire ou une obstruction lymphatique.",
+        "en": "Excess fluid accumulation in the interstitium, due to raised capillary hydrostatic pressure, reduced oncotic pressure, increased capillary permeability or lymphatic obstruction."
+      }
+    },
+    {
+      "fr": "POTASSIUM",
+      "en": "POTASSIUM",
+      "definition": {
+        "fr": "Principal cation intracellulaire (environ 140 mmol/L dans la cellule contre 3,5 à 5 mmol/L dans le plasma) ; sa perméabilité membranaire élevée au repos fixe en grande partie le potentiel de repos.",
+        "en": "Main intracellular cation (about 140 mmol/L inside the cell versus 3.5 to 5 mmol/L in plasma); its high resting membrane permeability largely sets the resting potential."
+      }
+    },
+    {
+      "fr": "HYPERKALIÉMIE",
+      "en": "HYPERKALEMIA",
+      "definition": {
+        "fr": "Concentration plasmatique de potassium supérieure à 5 mmol/L ; elle dépolarise les membranes excitables et expose à des troubles du rythme cardiaque potentiellement mortels.",
+        "en": "Plasma potassium concentration above 5 mmol/L; it depolarizes excitable membranes and carries a risk of potentially fatal cardiac arrhythmias."
+      }
+    },
+    {
+      "fr": "DÉPOLARISATION",
+      "en": "DEPOLARIZATION",
+      "definition": {
+        "fr": "Diminution de la négativité intracellulaire, le potentiel de membrane se rapprochant de zéro ou devenant positif ; elle résulte le plus souvent d'une entrée de Na+ ou de Ca2+.",
+        "en": "Decrease in intracellular negativity, with the membrane potential moving towards zero or becoming positive; it most often results from Na+ or Ca2+ entry."
+      }
+    },
+    {
+      "fr": "REPOLARISATION",
+      "en": "REPOLARIZATION",
+      "definition": {
+        "fr": "Retour du potentiel de membrane vers sa valeur de repos après une dépolarisation, dû à l'inactivation des canaux Na+ et à la sortie de K+ par les canaux potassiques voltage-dépendants.",
+        "en": "Return of the membrane potential towards its resting value after depolarization, due to Na+ channel inactivation and K+ efflux through voltage-gated potassium channels."
+      }
+    },
+    {
+      "fr": "SEUIL",
+      "en": "THRESHOLD",
+      "definition": {
+        "fr": "Valeur du potentiel de membrane (environ −55 mV dans le neurone) à partir de laquelle l'entrée de Na+ dépasse la sortie de K+ et déclenche un potentiel d'action tout ou rien.",
+        "en": "Membrane potential value (about −55 mV in neurons) at which Na+ entry exceeds K+ exit and triggers an all-or-none action potential."
+      }
+    },
+    {
+      "fr": "INACTIVATION",
+      "en": "INACTIVATION",
+      "definition": {
+        "fr": "Fermeture de la porte d'inactivation du canal Na+ voltage-dépendant peu après son ouverture ; le canal ne peut se rouvrir qu'après repolarisation, ce qui fonde la période réfractaire absolue.",
+        "en": "Closure of the inactivation gate of the voltage-gated Na+ channel shortly after it opens; the channel cannot reopen until repolarization, which underlies the absolute refractory period."
+      }
+    },
+    {
+      "fr": "TÉTRODOTOXINE",
+      "en": "TETRODOTOXIN",
+      "definition": {
+        "fr": "Toxine du poisson-globe qui bloque le pore des canaux Na+ voltage-dépendants par sa face extracellulaire, empêchant la genèse et la conduction des potentiels d'action nerveux.",
+        "en": "Pufferfish toxin that blocks the pore of voltage-gated Na+ channels from the extracellular side, preventing the generation and conduction of nerve action potentials."
+      }
+    },
+    {
+      "fr": "LIDOCAÏNE",
+      "en": "LIDOCAINE",
+      "definition": {
+        "fr": "Anesthésique local de type amide et antiarythmique de classe Ib ; elle bloque les canaux Na+ voltage-dépendants par leur versant intracellulaire, surtout à l'état ouvert ou inactivé.",
+        "en": "Amide-type local anesthetic and class Ib antiarrhythmic; it blocks voltage-gated Na+ channels from their intracellular side, mainly in the open or inactivated state."
+      }
+    },
+    {
+      "fr": "MYÉLINE",
+      "en": "MYELIN",
+      "definition": {
+        "fr": "Gaine lipidique isolante enroulée autour de l'axone, formée par les cellules de Schwann en périphérie et les oligodendrocytes dans le système nerveux central ; elle augmente la vitesse de conduction.",
+        "en": "Insulating lipid sheath wrapped around the axon, formed by Schwann cells in the periphery and oligodendrocytes in the central nervous system; it increases conduction velocity."
+      }
+    },
+    {
+      "fr": "NŒUD DE RANVIER",
+      "en": "NODE OF RANVIER",
+      "definition": {
+        "fr": "Interruption périodique de la gaine de myéline où se concentrent les canaux Na+ voltage-dépendants ; le potentiel d'action y est régénéré, ce qui permet la conduction saltatoire.",
+        "en": "Periodic gap in the myelin sheath where voltage-gated Na+ channels are concentrated; the action potential is regenerated there, allowing saltatory conduction."
+      }
+    },
+    {
+      "fr": "CANALOPATHIE",
+      "en": "CHANNELOPATHY",
+      "definition": {
+        "fr": "Maladie due au dysfonctionnement d'un canal ionique, d'origine génétique ou auto-immune ; exemples : mucoviscidose (canal chlorure CFTR), syndromes du QT long, paralysies périodiques.",
+        "en": "Disease caused by dysfunction of an ion channel, of genetic or autoimmune origin; examples: cystic fibrosis (CFTR chloride channel), long QT syndromes, periodic paralyses."
+      }
+    },
+    {
+      "fr": "SYNAPSE",
+      "en": "SYNAPSE",
+      "definition": {
+        "fr": "Zone de contact spécialisée où un neurone transmet un signal à une autre cellule, le plus souvent par libération d'un neurotransmetteur (synapse chimique), parfois par des jonctions communicantes (synapse électrique).",
+        "en": "Specialized contact zone where a neuron passes a signal to another cell, most often by releasing a neurotransmitter (chemical synapse), sometimes through gap junctions (electrical synapse)."
+      }
+    },
+    {
+      "fr": "ACÉTYLCHOLINE",
+      "en": "ACETYLCHOLINE",
+      "definition": {
+        "fr": "Neurotransmetteur de la jonction neuromusculaire, des ganglions végétatifs et des terminaisons parasympathiques, synthétisé à partir de choline et d'acétyl-CoA par la choline acétyltransférase.",
+        "en": "Neurotransmitter of the neuromuscular junction, autonomic ganglia and parasympathetic nerve endings, synthesized from choline and acetyl-CoA by choline acetyltransferase."
+      }
+    },
+    {
+      "fr": "CHOLINESTÉRASE",
+      "en": "CHOLINESTERASE",
+      "definition": {
+        "fr": "Enzyme hydrolysant les esters de choline ; l'acétylcholinestérase de la fente synaptique dégrade l'acétylcholine en choline et acétate. Elle est inhibée par la néostigmine et les organophosphorés.",
+        "en": "Enzyme that hydrolyses choline esters; acetylcholinesterase in the synaptic cleft breaks acetylcholine down into choline and acetate. It is inhibited by neostigmine and organophosphates."
+      }
+    },
+    {
+      "fr": "PLAQUE MOTRICE",
+      "en": "MOTOR END PLATE",
+      "definition": {
+        "fr": "Région spécialisée du sarcolemme située face à la terminaison du motoneurone, plissée et riche en récepteurs nicotiniques de l'acétylcholine, où naît le potentiel de plaque.",
+        "en": "Specialized region of the sarcolemma facing the motor nerve terminal, folded and rich in nicotinic acetylcholine receptors, where the end-plate potential arises."
+      }
+    },
+    {
+      "fr": "MYASTHÉNIE",
+      "en": "MYASTHENIA",
+      "definition": {
+        "fr": "Maladie auto-immune de la jonction neuromusculaire, due le plus souvent à des anticorps dirigés contre les récepteurs nicotiniques postsynaptiques ; elle donne une faiblesse musculaire fluctuante, aggravée par l'effort.",
+        "en": "Autoimmune disease of the neuromuscular junction (myasthenia gravis), most often due to antibodies against postsynaptic nicotinic receptors; it causes fluctuating muscle weakness that worsens with exertion."
+      }
+    },
+    {
+      "fr": "BOTULISME",
+      "en": "BOTULISM",
+      "definition": {
+        "fr": "Paralysie flasque descendante due à la toxine de Clostridium botulinum, qui clive les protéines SNARE et bloque la libération présynaptique d'acétylcholine.",
+        "en": "Descending flaccid paralysis caused by Clostridium botulinum toxin, which cleaves SNARE proteins and blocks presynaptic acetylcholine release."
+      }
+    },
+    {
+      "fr": "TUBULE T",
+      "en": "T TUBULE",
+      "definition": {
+        "fr": "Invagination transversale du sarcolemme qui conduit le potentiel d'action au cœur de la fibre musculaire, au contact des citernes terminales du réticulum sarcoplasmique.",
+        "en": "Transverse invagination of the sarcolemma that carries the action potential deep into the muscle fibre, in contact with the terminal cisternae of the sarcoplasmic reticulum."
+      }
+    },
+    {
+      "fr": "RYANODINE",
+      "en": "RYANODINE",
+      "definition": {
+        "fr": "Alcaloïde végétal qui a donné son nom au récepteur de la ryanodine (RyR), canal de libération du Ca2+ du réticulum sarcoplasmique ; l'isoforme RyR1 est celle du muscle squelettique.",
+        "en": "Plant alkaloid that gave its name to the ryanodine receptor (RyR), the Ca2+ release channel of the sarcoplasmic reticulum; the RyR1 isoform is the one found in skeletal muscle."
+      }
+    },
+    {
+      "fr": "TROPONINE",
+      "en": "TROPONIN",
+      "definition": {
+        "fr": "Complexe de trois protéines (C, I, T) du filament fin des muscles striés ; la fixation du Ca2+ sur la troponine C déplace la tropomyosine et démasque les sites de liaison de la myosine.",
+        "en": "Complex of three proteins (C, I, T) on the thin filament of striated muscle; Ca2+ binding to troponin C shifts tropomyosin and uncovers the myosin-binding sites."
+      }
+    }
+  ],
+  "quiz": [
+    {
+      "type": "single",
+      "difficulty": 1,
+      "stem": {
+        "fr": "Pour chaque molécule d'ATP hydrolysée, la Na+/K+-ATPase transporte :",
+        "en": "For each ATP molecule hydrolysed, the Na+/K+-ATPase transports:"
+      },
+      "options": [
+        {
+          "fr": "3 Na+ vers l'intérieur et 2 K+ vers l'extérieur",
+          "en": "3 Na+ into the cell and 2 K+ out of the cell",
+          "correct": false
+        },
+        {
+          "fr": "1 Na+ vers l'extérieur et 1 K+ vers l'intérieur",
+          "en": "1 Na+ out of the cell and 1 K+ into the cell",
+          "correct": false
+        },
+        {
+          "fr": "3 Na+ vers l'extérieur et 2 K+ vers l'intérieur",
+          "en": "3 Na+ out of the cell and 2 K+ into the cell",
+          "correct": true
+        },
+        {
+          "fr": "2 Na+ vers l'extérieur et 3 K+ vers l'intérieur",
+          "en": "2 Na+ out of the cell and 3 K+ into the cell",
+          "correct": false
+        }
+      ],
+      "explanation": {
+        "fr": "La pompe expulse 3 Na+ et fait entrer 2 K+ par cycle, contre leurs gradients respectifs. Ce transport inégal de charges la rend électrogène, mais sa contribution directe au potentiel de repos n'est que de quelques millivolts. Son rôle essentiel est d'entretenir les gradients ioniques.",
+        "en": "The pump extrudes 3 Na+ and takes up 2 K+ per cycle, each against its gradient. This unequal charge transfer makes it electrogenic, but its direct contribution to the resting potential is only a few millivolts. Its essential role is to maintain the ionic gradients."
+      }
+    },
+    {
+      "type": "single",
+      "difficulty": 2,
+      "stem": {
+        "fr": "Un homme de 25 ans, victime d'un accident de moto à Douala, reçoit en perfusion rapide 1 L de chlorure de sodium à 0,9 %. Une fois l'équilibre atteint, comment ce volume s'est-il réparti ?",
+        "en": "A 25-year-old man injured in a motorcycle accident in Douala receives a rapid infusion of 1 L of 0.9% sodium chloride. Once equilibrium is reached, how has this volume distributed?"
+      },
+      "options": [
+        {
+          "fr": "Dans le seul secteur extracellulaire, environ 250 mL dans le plasma et 750 mL dans l'interstitium",
+          "en": "In the extracellular compartment only, about 250 mL in plasma and 750 mL in the interstitium",
+          "correct": true
+        },
+        {
+          "fr": "Entièrement dans le plasma",
+          "en": "Entirely in plasma",
+          "correct": false
+        },
+        {
+          "fr": "Deux tiers dans le secteur intracellulaire et un tiers dans le secteur extracellulaire",
+          "en": "Two thirds in the intracellular compartment and one third in the extracellular compartment",
+          "correct": false
+        },
+        {
+          "fr": "À parts égales entre les secteurs intracellulaire et extracellulaire",
+          "en": "Equally between the intracellular and extracellular compartments",
+          "correct": false
+        }
+      ],
+      "explanation": {
+        "fr": "Le NaCl à 0,9 % est isotonique : il ne modifie pas l'osmolarité extracellulaire, donc aucun mouvement net d'eau ne se produit à travers les membranes cellulaires. Le sodium étant confiné au secteur extracellulaire, le volume s'y répartit comme ce secteur lui-même, soit environ un quart dans le plasma et trois quarts dans l'interstitium.",
+        "en": "0.9% NaCl is isotonic: it does not change extracellular osmolarity, so there is no net water movement across cell membranes. Because sodium is confined to the extracellular compartment, the volume distributes like that compartment itself, about one quarter in plasma and three quarters in the interstitium."
+      }
+    },
+    {
+      "type": "single",
+      "difficulty": 3,
+      "stem": {
+        "fr": "Des globules rouges humains sont placés dans une solution aqueuse contenant uniquement de l'urée à 300 mOsm/L. Que se passe-t-il ?",
+        "en": "Human red blood cells are placed in an aqueous solution containing only urea at 300 mOsm/L. What happens?"
+      },
+      "options": [
+        {
+          "fr": "Le volume cellulaire reste stable, car la solution est isosmotique donc isotonique",
+          "en": "Cell volume remains stable, because the solution is isosmotic and therefore isotonic",
+          "correct": false
+        },
+        {
+          "fr": "Les cellules se rétractent durablement, car l'urée attire l'eau hors de la cellule",
+          "en": "The cells shrink permanently, because urea draws water out of the cell",
+          "correct": false
+        },
+        {
+          "fr": "Les cellules gonflent, car la solution est hyperosmotique",
+          "en": "The cells swell, because the solution is hyperosmotic",
+          "correct": false
+        },
+        {
+          "fr": "Les cellules gonflent puis se lysent, car la solution est isosmotique mais hypotonique",
+          "en": "The cells swell and then lyse, because the solution is isosmotic but hypotonic",
+          "correct": true
+        }
+      ],
+      "explanation": {
+        "fr": "L'urée traverse la membrane du globule rouge : elle n'exerce donc pas de pression osmotique efficace durable. Elle entre dans la cellule en suivant son gradient, l'eau la suit, et la cellule gonfle jusqu'à l'hémolyse. La solution a la même osmolarité que le milieu intracellulaire mais une tonicité nulle.",
+        "en": "Urea crosses the red cell membrane, so it exerts no lasting effective osmotic pressure. It enters the cell down its gradient, water follows, and the cell swells until it hemolyses. The solution has the same osmolarity as the intracellular fluid but zero tonicity."
+      }
+    },
+    {
+      "type": "multiple",
+      "difficulty": 2,
+      "stem": {
+        "fr": "Parmi les transporteurs suivants, lesquels réalisent un transport actif secondaire ?",
+        "en": "Which of the following transporters carry out secondary active transport?"
+      },
+      "options": [
+        {
+          "fr": "La pompe à calcium SERCA du réticulum sarcoplasmique",
+          "en": "The SERCA calcium pump of the sarcoplasmic reticulum",
+          "correct": false
+        },
+        {
+          "fr": "Le cotransporteur Na+-glucose SGLT1 de l'entérocyte",
+          "en": "The Na+-glucose cotransporter SGLT1 of the enterocyte",
+          "correct": true
+        },
+        {
+          "fr": "L'échangeur Na+/Ca2+ du cardiomyocyte",
+          "en": "The Na+/Ca2+ exchanger of the cardiomyocyte",
+          "correct": true
+        },
+        {
+          "fr": "Le transporteur de glucose GLUT4 du muscle squelettique",
+          "en": "The glucose transporter GLUT4 of skeletal muscle",
+          "correct": false
+        },
+        {
+          "fr": "La Na+/K+-ATPase",
+          "en": "The Na+/K+-ATPase",
+          "correct": false
+        }
+      ],
+      "explanation": {
+        "fr": "SGLT1 (symport) et l'échangeur Na+/Ca2+ (antiport) utilisent l'énergie du gradient de sodium, lui-même créé par la Na+/K+-ATPase : ce sont des transports actifs secondaires. GLUT4 assure une diffusion facilitée, passive. La Na+/K+-ATPase et SERCA hydrolysent directement l'ATP : ce sont des transports actifs primaires.",
+        "en": "SGLT1 (symport) and the Na+/Ca2+ exchanger (antiport) use the energy of the sodium gradient, itself created by the Na+/K+-ATPase: they are secondary active transporters. GLUT4 mediates passive facilitated diffusion. The Na+/K+-ATPase and SERCA hydrolyse ATP directly: they are primary active transporters."
+      }
+    },
+    {
+      "type": "single",
+      "difficulty": 2,
+      "stem": {
+        "fr": "Le potentiel de repos d'un neurone (environ −70 mV) est proche du potentiel d'équilibre du potassium principalement parce que :",
+        "en": "The resting potential of a neuron (about −70 mV) lies close to the potassium equilibrium potential mainly because:"
+      },
+      "options": [
+        {
+          "fr": "Les canaux Na+ voltage-dépendants sont ouverts au repos",
+          "en": "Voltage-gated Na+ channels are open at rest",
+          "correct": false
+        },
+        {
+          "fr": "La membrane au repos est beaucoup plus perméable au K+ qu'au Na+",
+          "en": "The resting membrane is far more permeable to K+ than to Na+",
+          "correct": true
+        },
+        {
+          "fr": "La Na+/K+-ATPase génère directement la quasi-totalité du potentiel de repos",
+          "en": "The Na+/K+-ATPase directly generates almost all of the resting potential",
+          "correct": false
+        },
+        {
+          "fr": "La concentration de K+ est plus élevée à l'extérieur qu'à l'intérieur de la cellule",
+          "en": "The K+ concentration is higher outside than inside the cell",
+          "correct": false
+        }
+      ],
+      "explanation": {
+        "fr": "Le potentiel de membrane est une moyenne des potentiels d'équilibre pondérée par les perméabilités (équation de Goldman-Hodgkin-Katz). Au repos, les canaux potassiques de fuite dominent : le potentiel se rapproche donc du potentiel d'équilibre du K+ (environ −90 mV). Une faible perméabilité au Na+ le maintient un peu moins négatif.",
+        "en": "The membrane potential is an average of the equilibrium potentials weighted by permeabilities (Goldman-Hodgkin-Katz equation). At rest, potassium leak channels dominate, so the potential approaches the K+ equilibrium potential (about −90 mV). A small Na+ permeability keeps it slightly less negative."
+      }
+    },
+    {
+      "type": "single",
+      "difficulty": 3,
+      "stem": {
+        "fr": "Un homme de 58 ans, insuffisant rénal chronique, a manqué deux séances d'hémodialyse. Il consulte aux urgences de Yaoundé pour une faiblesse musculaire diffuse. La kaliémie est à 7,2 mmol/L et l'ECG montre des ondes T amples et pointues. Quel mécanisme explique la faiblesse musculaire ?",
+        "en": "A 58-year-old man with chronic kidney disease has missed two hemodialysis sessions. He presents to an emergency department in Yaoundé with diffuse muscle weakness. Plasma potassium is 7.2 mmol/L and the ECG shows tall, peaked T waves. Which mechanism explains the muscle weakness?"
+      },
+      "options": [
+        {
+          "fr": "Une hyperpolarisation de la membrane qui éloigne le potentiel de repos du seuil",
+          "en": "Membrane hyperpolarization that moves the resting potential away from threshold",
+          "correct": false
+        },
+        {
+          "fr": "Un blocage direct des récepteurs nicotiniques par le potassium",
+          "en": "Direct blockade of nicotinic receptors by potassium",
+          "correct": false
+        },
+        {
+          "fr": "Une inhibition de la libération de calcium par le réticulum sarcoplasmique",
+          "en": "Inhibition of calcium release from the sarcoplasmic reticulum",
+          "correct": false
+        },
+        {
+          "fr": "Une inhibition de l'acétylcholinestérase",
+          "en": "Inhibition of acetylcholinesterase",
+          "correct": false
+        },
+        {
+          "fr": "Une dépolarisation prolongée de la membrane qui maintient les canaux Na+ voltage-dépendants inactivés",
+          "en": "Sustained membrane depolarization that keeps voltage-gated Na+ channels inactivated",
+          "correct": true
+        }
+      ],
+      "explanation": {
+        "fr": "L'élévation du K+ extracellulaire rend le potentiel d'équilibre du K+ moins négatif et dépolarise la membrane au repos. Cette dépolarisation durable ferme les portes d'inactivation d'une fraction croissante des canaux Na+, qui ne sont plus disponibles pour déclencher un potentiel d'action : l'excitabilité diminue. C'est l'hypokaliémie, et non l'hyperkaliémie, qui hyperpolarise.",
+        "en": "A rise in extracellular K+ makes the K+ equilibrium potential less negative and depolarizes the resting membrane. This sustained depolarization closes the inactivation gates of a growing fraction of Na+ channels, which are no longer available to fire an action potential: excitability falls. It is hypokalemia, not hyperkalemia, that hyperpolarizes."
+      }
+    },
+    {
+      "type": "single",
+      "difficulty": 2,
+      "stem": {
+        "fr": "Pendant la période réfractaire absolue d'un axone, aucun stimulus, quelle que soit son intensité, ne peut déclencher un nouveau potentiel d'action. Quelle en est la cause ?",
+        "en": "During the absolute refractory period of an axon, no stimulus, however strong, can trigger a new action potential. What is the cause?"
+      },
+      "options": [
+        {
+          "fr": "Les gradients de Na+ et de K+ sont épuisés par le potentiel d'action précédent",
+          "en": "The Na+ and K+ gradients have been exhausted by the preceding action potential",
+          "correct": false
+        },
+        {
+          "fr": "La Na+/K+-ATPase est momentanément arrêtée",
+          "en": "The Na+/K+-ATPase is momentarily stopped",
+          "correct": false
+        },
+        {
+          "fr": "Les canaux K+ voltage-dépendants sont tous fermés",
+          "en": "Voltage-gated K+ channels are all closed",
+          "correct": false
+        },
+        {
+          "fr": "Les canaux Na+ voltage-dépendants sont déjà ouverts ou dans l'état inactivé",
+          "en": "Voltage-gated Na+ channels are already open or in the inactivated state",
+          "correct": true
+        }
+      ],
+      "explanation": {
+        "fr": "Pendant la phase ascendante, les canaux Na+ sont déjà ouverts ; ensuite leur porte d'inactivation se ferme et ils ne peuvent se rouvrir tant que la membrane n'est pas repolarisée. Un seul potentiel d'action ne modifie quasiment pas les concentrations ioniques. La période réfractaire relative, elle, tient à la conductance potassique encore élevée et aux canaux Na+ partiellement récupérés.",
+        "en": "During the upstroke, Na+ channels are already open; their inactivation gate then closes and they cannot reopen until the membrane has repolarized. A single action potential hardly changes ionic concentrations. The relative refractory period, by contrast, is due to the still-elevated potassium conductance and to partially recovered Na+ channels."
+      }
+    },
+    {
+      "type": "multiple",
+      "difficulty": 2,
+      "stem": {
+        "fr": "Quels facteurs augmentent la vitesse de conduction du potentiel d'action le long d'un axone ?",
+        "en": "Which factors increase the conduction velocity of the action potential along an axon?"
+      },
+      "options": [
+        {
+          "fr": "La diminution de la résistance électrique de la membrane",
+          "en": "A decrease in membrane resistance",
+          "correct": false
+        },
+        {
+          "fr": "Le refroidissement du nerf",
+          "en": "Cooling of the nerve",
+          "correct": false
+        },
+        {
+          "fr": "La présence d'une gaine de myéline",
+          "en": "The presence of a myelin sheath",
+          "correct": true
+        },
+        {
+          "fr": "L'augmentation du diamètre de l'axone",
+          "en": "An increase in axon diameter",
+          "correct": true
+        },
+        {
+          "fr": "L'augmentation de la capacité électrique de la membrane",
+          "en": "An increase in membrane capacitance",
+          "correct": false
+        }
+      ],
+      "explanation": {
+        "fr": "La myéline augmente la résistance membranaire et diminue la capacité, ce qui allonge la constante d'espace et permet la conduction saltatoire. Un gros diamètre réduit la résistance axiale au courant. À l'inverse, une capacité élevée, une résistance membranaire faible (fuite de courant) et le froid ralentissent la conduction.",
+        "en": "Myelin raises membrane resistance and lowers capacitance, which lengthens the length constant and allows saltatory conduction. A large diameter lowers axial resistance to current flow. Conversely, high capacitance, low membrane resistance (current leak) and cold slow conduction down."
+      }
+    },
+    {
+      "type": "single",
+      "difficulty": 2,
+      "stem": {
+        "fr": "Une femme de 28 ans se plaint depuis trois mois d'une chute des paupières et d'une vision double qui s'aggravent en fin de journée et s'améliorent au repos. La mastication prolongée la fatigue. Les symptômes régressent nettement après l'administration de néostigmine. Quel est le mécanisme le plus probable ?",
+        "en": "A 28-year-old woman has had drooping eyelids and double vision for three months; they worsen at the end of the day and improve with rest. Prolonged chewing tires her. The symptoms clearly improve after neostigmine. What is the most likely mechanism?"
+      },
+      "options": [
+        {
+          "fr": "Auto-anticorps dirigés contre les récepteurs nicotiniques postsynaptiques de l'acétylcholine",
+          "en": "Autoantibodies against postsynaptic nicotinic acetylcholine receptors",
+          "correct": true
+        },
+        {
+          "fr": "Auto-anticorps dirigés contre les canaux Ca2+ voltage-dépendants présynaptiques",
+          "en": "Autoantibodies against presynaptic voltage-gated Ca2+ channels",
+          "correct": false
+        },
+        {
+          "fr": "Clivage des protéines SNARE par une toxine bactérienne",
+          "en": "Cleavage of SNARE proteins by a bacterial toxin",
+          "correct": false
+        },
+        {
+          "fr": "Démyélinisation des nerfs périphériques",
+          "en": "Demyelination of peripheral nerves",
+          "correct": false
+        },
+        {
+          "fr": "Déficit en dystrophine",
+          "en": "Dystrophin deficiency",
+          "correct": false
+        }
+      ],
+      "explanation": {
+        "fr": "Une faiblesse fatigable à début oculaire, améliorée par un inhibiteur de l'acétylcholinestérase, évoque une myasthénie. Les anticorps réduisent le nombre de récepteurs nicotiniques fonctionnels : le potentiel de plaque diminue et n'atteint plus toujours le seuil. Dans le syndrome de Lambert-Eaton (anticorps anti-canaux calciques), la force s'améliore au contraire transitoirement à l'effort répété.",
+        "en": "Fatigable weakness starting in the eye muscles and improved by an acetylcholinesterase inhibitor suggests myasthenia gravis. The antibodies reduce the number of functional nicotinic receptors: the end-plate potential falls and no longer always reaches threshold. In Lambert-Eaton syndrome (anti-calcium channel antibodies), strength instead improves transiently with repeated effort."
+      }
+    },
+    {
+      "type": "single",
+      "difficulty": 3,
+      "stem": {
+        "fr": "Un cultivateur de 35 ans est amené au centre de santé d'un village de l'Ouest-Cameroun après avoir pulvérisé un insecticide sans protection. Il présente un myosis serré, une hypersalivation, une bronchorrhée, une bradycardie, une diarrhée et des fasciculations musculaires. Quel est le mécanisme de cette intoxication ?",
+        "en": "A 35-year-old farmer is brought to a village health centre in the West Region of Cameroon after spraying an insecticide without protection. He has pinpoint pupils, hypersalivation, bronchorrhea, bradycardia, diarrhea and muscle fasciculations. What is the mechanism of this poisoning?"
+      },
+      "options": [
+        {
+          "fr": "Blocage des récepteurs muscariniques",
+          "en": "Blockade of muscarinic receptors",
+          "correct": false
+        },
+        {
+          "fr": "Blocage des canaux Na+ voltage-dépendants",
+          "en": "Blockade of voltage-gated Na+ channels",
+          "correct": false
+        },
+        {
+          "fr": "Inhibition de l'acétylcholinestérase",
+          "en": "Inhibition of acetylcholinesterase",
+          "correct": true
+        },
+        {
+          "fr": "Blocage compétitif des récepteurs nicotiniques de la plaque motrice",
+          "en": "Competitive blockade of nicotinic receptors at the motor end plate",
+          "correct": false
+        },
+        {
+          "fr": "Blocage de la libération présynaptique d'acétylcholine",
+          "en": "Blockade of presynaptic acetylcholine release",
+          "correct": false
+        }
+      ],
+      "explanation": {
+        "fr": "Les organophosphorés phosphorylent l'acétylcholinestérase et l'inhibent de façon durable. L'acétylcholine s'accumule et stimule en excès les récepteurs muscariniques (myosis, hypersécrétions, bradycardie, diarrhée) et nicotiniques (fasciculations puis paralysie). Le traitement associe l'atropine, qui antagonise les effets muscariniques, et un réactivateur de l'enzyme comme la pralidoxime.",
+        "en": "Organophosphates phosphorylate acetylcholinesterase and inhibit it durably. Acetylcholine accumulates and overstimulates muscarinic receptors (miosis, hypersecretion, bradycardia, diarrhea) and nicotinic receptors (fasciculations, then paralysis). Treatment combines atropine, which antagonizes the muscarinic effects, and an enzyme reactivator such as pralidoxime."
+      }
+    },
+    {
+      "type": "multiple",
+      "difficulty": 3,
+      "stem": {
+        "fr": "Concernant le couplage excitation-contraction dans le muscle squelettique, quelles propositions sont exactes ?",
+        "en": "Regarding excitation-contraction coupling in skeletal muscle, which statements are correct?"
+      },
+      "options": [
+        {
+          "fr": "La fixation d'une molécule d'ATP sur la tête de myosine est nécessaire à son détachement de l'actine",
+          "en": "Binding of an ATP molecule to the myosin head is required for its detachment from actin",
+          "correct": true
+        },
+        {
+          "fr": "L'entrée de Ca2+ extracellulaire est indispensable pour déclencher la libération de Ca2+ par le réticulum sarcoplasmique",
+          "en": "Entry of extracellular Ca2+ is indispensable to trigger Ca2+ release from the sarcoplasmic reticulum",
+          "correct": false
+        },
+        {
+          "fr": "Le Ca2+ déclenche la contraction en se liant à la calmoduline, qui active la kinase des chaînes légères de myosine",
+          "en": "Ca2+ triggers contraction by binding calmodulin, which activates myosin light-chain kinase",
+          "correct": false
+        },
+        {
+          "fr": "Le récepteur des dihydropyridines du tubule T agit comme un capteur de voltage couplé mécaniquement à RyR1",
+          "en": "The dihydropyridine receptor of the T tubule acts as a voltage sensor mechanically coupled to RyR1",
+          "correct": true
+        },
+        {
+          "fr": "Le Ca2+ libéré se fixe sur la troponine C, ce qui déplace la tropomyosine",
+          "en": "The released Ca2+ binds troponin C, which shifts tropomyosin",
+          "correct": true
+        }
+      ],
+      "explanation": {
+        "fr": "Dans le muscle squelettique, le couplage entre le récepteur des dihydropyridines et RyR1 est mécanique et ne dépend pas d'une entrée de Ca2+ extracellulaire, contrairement au muscle cardiaque (libération de calcium induite par le calcium). Le Ca2+ agit sur la troponine C ; la voie calmoduline-kinase des chaînes légères est propre au muscle lisse. Sans ATP, la myosine reste liée à l'actine, d'où la rigidité cadavérique.",
+        "en": "In skeletal muscle, coupling between the dihydropyridine receptor and RyR1 is mechanical and does not depend on extracellular Ca2+ entry, unlike cardiac muscle (calcium-induced calcium release). Ca2+ acts on troponin C; the calmodulin-myosin light-chain kinase pathway is specific to smooth muscle. Without ATP, myosin stays bound to actin, hence rigor mortis."
+      }
+    },
+    {
+      "type": "single",
+      "difficulty": 3,
+      "stem": {
+        "fr": "Un homme de 19 ans est opéré d'une appendicite sous anesthésie générale associant halothane et succinylcholine. Trente minutes après l'induction apparaissent une rigidité musculaire généralisée, une tachycardie, une élévation rapide du CO2 expiré et une température à 41 °C. Quelle protéine est le plus probablement anormale ?",
+        "en": "A 19-year-old man undergoes appendectomy under general anesthesia with halothane and succinylcholine. Thirty minutes after induction he develops generalized muscle rigidity, tachycardia, a rapid rise in end-tidal CO2 and a temperature of 41 °C. Which protein is most likely abnormal?"
+      },
+      "options": [
+        {
+          "fr": "L'acétylcholinestérase",
+          "en": "Acetylcholinesterase",
+          "correct": false
+        },
+        {
+          "fr": "Le récepteur de la ryanodine RyR1 du réticulum sarcoplasmique",
+          "en": "The ryanodine receptor RyR1 of the sarcoplasmic reticulum",
+          "correct": true
+        },
+        {
+          "fr": "Le récepteur nicotinique de la plaque motrice",
+          "en": "The nicotinic receptor of the motor end plate",
+          "correct": false
+        },
+        {
+          "fr": "La Na+/K+-ATPase du sarcolemme",
+          "en": "The Na+/K+-ATPase of the sarcolemma",
+          "correct": false
+        },
+        {
+          "fr": "La troponine C",
+          "en": "Troponin C",
+          "correct": false
+        }
+      ],
+      "explanation": {
+        "fr": "Ce tableau est celui d'une hyperthermie maligne, le plus souvent liée à une mutation du gène RYR1. Sous l'effet des anesthésiques halogénés ou de la succinylcholine, le canal libère du Ca2+ de façon incontrôlée : contraction soutenue, hypermétabolisme, production de chaleur et de CO2, rhabdomyolyse. Le traitement repose sur l'arrêt de l'agent déclenchant et le dantrolène, qui inhibe la libération de Ca2+ par le réticulum.",
+        "en": "This picture is that of malignant hyperthermia, most often linked to a mutation in the RYR1 gene. Under volatile halogenated anesthetics or succinylcholine, the channel releases Ca2+ uncontrollably: sustained contraction, hypermetabolism, heat and CO2 production, rhabdomyolysis. Treatment relies on stopping the triggering agent and on dantrolene, which inhibits Ca2+ release from the reticulum."
+      }
+    }
+  ],
+  "open_questions": [
+    {
+      "question": {
+        "fr": "Distinguez osmolarité et tonicité, et illustrez la différence par un exemple.",
+        "en": "Distinguish osmolarity from tonicity, and illustrate the difference with an example."
+      },
+      "model_answer": {
+        "fr": "L'osmolarité est la concentration totale de particules dissoutes par litre de solution, quelle que soit leur nature. La tonicité décrit l'effet de la solution sur le volume cellulaire : elle ne dépend que des solutés qui ne traversent pas la membrane (osmolarité efficace), comme le sodium. Exemple : une solution d'urée à 300 mOsm/L est isosmotique au plasma mais hypotonique, car l'urée pénètre dans la cellule, l'eau suit et la cellule gonfle. Le NaCl à 0,9 % est à la fois isosmotique et isotonique.",
+        "en": "Osmolarity is the total concentration of dissolved particles per litre of solution, whatever their nature. Tonicity describes the effect of the solution on cell volume: it depends only on solutes that do not cross the membrane (effective osmolarity), such as sodium. Example: a 300 mOsm/L urea solution is isosmotic with plasma but hypotonic, because urea enters the cell, water follows and the cell swells. 0.9% NaCl is both isosmotic and isotonic."
+      }
+    },
+    {
+      "question": {
+        "fr": "Expliquez comment s'établit le potentiel de repos d'une cellule excitable.",
+        "en": "Explain how the resting membrane potential of an excitable cell is established."
+      },
+      "model_answer": {
+        "fr": "La Na+/K+-ATPase crée des gradients : K+ élevé dans la cellule, Na+ élevé à l'extérieur. Au repos, la membrane est surtout perméable au K+ grâce aux canaux de fuite : le K+ sort, laissant des charges négatives à l'intérieur, jusqu'à ce que le gradient électrique s'oppose au gradient chimique. Le potentiel se rapproche ainsi du potentiel d'équilibre du K+ (environ −90 mV, équation de Nernst). Une faible perméabilité au Na+ le rend un peu moins négatif (équation de Goldman). La pompe, électrogène, n'ajoute directement que quelques millivolts.",
+        "en": "The Na+/K+-ATPase creates gradients: high K+ inside the cell, high Na+ outside. At rest the membrane is mostly permeable to K+ through leak channels: K+ leaves, leaving negative charges inside, until the electrical gradient opposes the chemical gradient. The potential thus approaches the K+ equilibrium potential (about −90 mV, Nernst equation). A small Na+ permeability makes it slightly less negative (Goldman equation). The electrogenic pump directly adds only a few millivolts."
+      }
+    },
+    {
+      "question": {
+        "fr": "Décrivez les phases du potentiel d'action neuronal et leurs bases ioniques.",
+        "en": "Describe the phases of the neuronal action potential and their ionic basis."
+      },
+      "model_answer": {
+        "fr": "Un stimulus dépolarise la membrane jusqu'au seuil (environ −55 mV). Les canaux Na+ voltage-dépendants s'ouvrent alors massivement : l'entrée de Na+ produit une dépolarisation rapide, auto-entretenue, jusqu'à environ +30 mV. Les canaux Na+ s'inactivent ensuite, tandis que les canaux K+ voltage-dépendants, plus lents, s'ouvrent : la sortie de K+ repolarise la membrane. Leur fermeture tardive entraîne une brève hyperpolarisation. La période réfractaire absolue correspond aux canaux Na+ ouverts ou inactivés ; la période réfractaire relative à leur récupération partielle et à une conductance potassique encore élevée.",
+        "en": "A stimulus depolarizes the membrane to threshold (about −55 mV). Voltage-gated Na+ channels then open massively: Na+ entry produces a rapid, self-sustaining depolarization up to about +30 mV. The Na+ channels then inactivate, while the slower voltage-gated K+ channels open: K+ efflux repolarizes the membrane. Their delayed closure causes a brief hyperpolarization. The absolute refractory period corresponds to open or inactivated Na+ channels; the relative refractory period to their partial recovery and a still-elevated potassium conductance."
+      }
+    },
+    {
+      "question": {
+        "fr": "Décrivez la séquence des événements de la transmission à la jonction neuromusculaire, de l'arrivée du potentiel d'action nerveux à la fin du signal.",
+        "en": "Describe the sequence of events in transmission at the neuromuscular junction, from the arrival of the nerve action potential to the end of the signal."
+      },
+      "model_answer": {
+        "fr": "Le potentiel d'action atteint la terminaison du motoneurone et ouvre des canaux Ca2+ voltage-dépendants. L'entrée de Ca2+ provoque la fusion des vésicules, par les protéines SNARE, et l'exocytose d'acétylcholine. Celle-ci diffuse dans la fente et se lie aux récepteurs nicotiniques de la plaque motrice, canaux cationiques : l'entrée de Na+ crée un potentiel de plaque. Ce potentiel, normalement supérieur au seuil, ouvre les canaux Na+ voltage-dépendants voisins et déclenche un potentiel d'action musculaire. L'acétylcholinestérase hydrolyse l'acétylcholine ; la choline est recaptée par la terminaison.",
+        "en": "The action potential reaches the motor nerve terminal and opens voltage-gated Ca2+ channels. Ca2+ entry causes vesicle fusion, through SNARE proteins, and exocytosis of acetylcholine. Acetylcholine diffuses across the cleft and binds nicotinic receptors on the motor end plate, which are cation channels: Na+ entry creates an end-plate potential. This potential, normally above threshold, opens neighbouring voltage-gated Na+ channels and triggers a muscle action potential. Acetylcholinesterase hydrolyses acetylcholine; choline is taken back up by the terminal."
+      }
+    },
+    {
+      "question": {
+        "fr": "Expliquez le couplage excitation-contraction dans le muscle squelettique et les mécanismes de la relaxation.",
+        "en": "Explain excitation-contraction coupling in skeletal muscle and the mechanisms of relaxation."
+      },
+      "model_answer": {
+        "fr": "Le potentiel d'action se propage le long du sarcolemme et dans les tubules T. Il modifie la conformation du récepteur des dihydropyridines, capteur de voltage, qui ouvre mécaniquement le canal RyR1 du réticulum sarcoplasmique. Le Ca2+ libéré se lie à la troponine C ; la tropomyosine se déplace et démasque les sites de l'actine : les ponts actine-myosine se forment et les filaments glissent, avec hydrolyse d'ATP. La relaxation survient quand la pompe SERCA repompe le Ca2+ dans le réticulum ; l'ATP est aussi nécessaire au détachement de la myosine.",
+        "en": "The action potential spreads along the sarcolemma and into the T tubules. It changes the conformation of the dihydropyridine receptor, a voltage sensor, which mechanically opens the RyR1 channel of the sarcoplasmic reticulum. The released Ca2+ binds troponin C; tropomyosin moves and uncovers the actin sites: actin-myosin cross-bridges form and the filaments slide, with ATP hydrolysis. Relaxation occurs when the SERCA pump returns Ca2+ to the reticulum; ATP is also required for myosin detachment."
+      }
+    }
+  ],
+  "references": [
+    {
+      "citation": "Hall JE, Hall ME. Guyton and Hall Textbook of Medical Physiology. 14th ed. Philadelphia: Elsevier; 2021. Chapters 4-7 and 25.",
+      "url": ""
+    },
+    {
+      "citation": "Boron WF, Boulpaep EL. Medical Physiology. 3rd ed. Philadelphia: Elsevier; 2017. Chapters 5-9.",
+      "url": ""
+    },
+    {
+      "citation": "Costanzo LS. Physiology. 7th ed. Philadelphia: Elsevier; 2022. Chapter 1: Cellular Physiology.",
+      "url": ""
+    },
+    {
+      "citation": "Betts JG, Young KA, Wise JA, et al. Anatomy and Physiology 2e. Houston: OpenStax; 2022. Sections 3.1 The Cell Membrane, 10.3 Muscle Fiber Contraction and Relaxation, 12.4 The Action Potential.",
+      "url": "https://openstax.org/books/anatomy-and-physiology-2e/pages/3-1-the-cell-membrane"
+    },
+    {
+      "citation": "Pirahanchi Y, Jessu R, Aeddula NR. Physiology, Sodium Potassium Pump. In: StatPearls. Treasure Island (FL): StatPearls Publishing; updated 13 March 2023.",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK537088/"
+    },
+    {
+      "citation": "Brinkman JE, Dorius B, Sharma S. Physiology, Body Fluids. In: StatPearls. Treasure Island (FL): StatPearls Publishing; updated 27 January 2023.",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK482447/"
+    }
+  ]
+}
