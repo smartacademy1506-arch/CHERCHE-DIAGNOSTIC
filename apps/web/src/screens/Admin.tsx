@@ -240,7 +240,7 @@ function Users({ L, run }: P) {
 
 function Payments({ L, run }: P) {
   const [rows, setRows] = useState<any[] | null>(null);
-  const load = useCallback(async () => { try { setRows(await db.select('payments', 'select=id,reference,amount,currency_code,status,created_at,plans(code),profiles:user_id(full_name)&order=created_at.desc&limit=100')); } catch { setRows(await db.select('payments', 'select=id,reference,amount,currency_code,status,created_at,plans(code)&order=created_at.desc&limit=100').catch(() => [])); } }, []);
+  const load = useCallback(async () => { setRows(await db.select('payments', 'select=id,reference,amount,currency_code,status,created_at,plans(code)&order=created_at.desc&limit=100').catch(() => [])); }, []);
   useEffect(() => { void load(); }, [load]);
   if (!rows) return <Loader text="…" />;
   return (

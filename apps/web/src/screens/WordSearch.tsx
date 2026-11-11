@@ -80,6 +80,12 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
     for (const w of puzzle.words) if (found.includes(w.term_id)) for (let i = 0; i < w.word.length; i++) s.add(key(w.row + i * w.d_row, w.col + i * w.d_col));
     return s;
   }, [found, puzzle]);
+  // La définition s'efface d'elle-même pour ne pas masquer la grille.
+  useEffect(() => {
+    if (!focus) return;
+    const timer = window.setTimeout(() => setFocus(null), 7000);
+    return () => window.clearTimeout(timer);
+  }, [focus]);
   const selCells = useMemo(() => new Set(sel.map((c) => key(c.r, c.c))), [sel]);
 
   const persist = useCallback((list: string[], completed: boolean) => {
