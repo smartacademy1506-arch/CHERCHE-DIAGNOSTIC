@@ -53,12 +53,12 @@ function ChapterRow({ chapter }: { chapter: Chapter }) {
   const open = canOpen(chapter);
   return (
     <Card onClick={() => go(open ? `c/${chapter.id}` : 'plans')} className="row">
-      <Ring value={p.mastery} size={48} />
+      <span className="chapter-no">{String(chapter.sort).padStart(2, '0')}</span>
       <div className="grow">
         <strong>{tr(chapter.title)}</strong>
         <p className="muted small">{tr(chapter.description)}</p>
       </div>
-      {open ? <Tag kind={chapter.is_free ? 'free' : 'premium'}>{t(chapter.is_free ? 'free' : 'premium')}</Tag> : <span className="lock"><Icon name="lock" size={18} /></span>}
+      {p.active ? <Ring value={p.mastery} /> : open ? <Tag kind={chapter.is_free ? 'free' : 'premium'}>{t(chapter.is_free ? 'free' : 'premium')}</Tag> : <span className="lock" aria-label={t('premium')}><Icon name="lock" size={18} /></span>}
     </Card>
   );
 }
@@ -81,10 +81,7 @@ export function Home() {
   return (
     <div className="page">
       <section className="hero">
-        <div>
-          <p className="eyebrow">{t('tagline')}</p>
-          <h1>{t('home.hello')}{firstName ? `, ${firstName}` : ''}</h1>
-        </div>
+        <h1>{t('home.hello')}{firstName ? `, ${firstName}` : ''}</h1>
         {!session && <Button variant="soft" onClick={() => go('auth')}>{t('auth.login')}</Button>}
       </section>
 
@@ -92,12 +89,11 @@ export function Home() {
         <section>
           <h2>{t('home.continue')}</h2>
           <Card onClick={() => go(`c/${current.c.id}/${current.p.active ? nextStep(current.p).path : ''}`.replace(/\/$/, ''))} className="row feature">
-            <Ring value={current.p.mastery} />
             <div className="grow">
               <strong>{tr(current.c.title)}</strong>
               <p className="small">{current.p.active ? t(nextStep(current.p).key) : t('home.empty')}</p>
             </div>
-            <Icon name="play" />
+            {current.p.active ? <Ring value={current.p.mastery} /> : <Icon name="play" />}
           </Card>
         </section>
       )}

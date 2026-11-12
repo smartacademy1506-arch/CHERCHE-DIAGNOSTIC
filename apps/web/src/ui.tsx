@@ -51,16 +51,33 @@ export function Card({ children, className = '', onClick, label }: { children: R
   return <div className={`card ${className}`}>{children}</div>;
 }
 
-export function Ring({ value, size = 56, label }: { value: number; size?: number; label?: string }) {
-  const r = (size - 8) / 2;
-  const c = 2 * Math.PI * r;
+/** Maîtrise d'un chapitre : un chiffre lisible et une barre fine (pas d'anneau décoratif). */
+export function Ring({ value, label }: { value: number; size?: number; label?: string }) {
   const v = Math.max(0, Math.min(1, value));
   return (
-    <svg className="ring" width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label={label ?? `${Math.round(v * 100)} %`}>
-      <circle cx={size / 2} cy={size / 2} r={r} className="ring-bg" />
-      <circle cx={size / 2} cy={size / 2} r={r} className="ring-fg" strokeDasharray={c} strokeDashoffset={c * (1 - v)} transform={`rotate(-90 ${size / 2} ${size / 2})`} />
-      <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" className="ring-text">{Math.round(v * 100)}</text>
-    </svg>
+    <span className="meter" role="img" aria-label={label ?? `${Math.round(v * 100)} %`}>
+      <span>{Math.round(v * 100)}<small>%</small></span>
+      <span className="bar"><span style={{ display: 'block', height: '100%', width: `${v * 100}%`, background: 'currentColor', borderRadius: 3 }} /></span>
+    </span>
+  );
+}
+
+/** Logo fourni par l'utilisateur (assets/brand), servi depuis /brand. */
+export function Logo({ variant = 'horizontal', className }: { variant?: 'horizontal' | 'mark'; className?: string }) {
+  return variant === 'mark'
+    ? <img src="/brand/logo-mark.png" alt="CHERCHE & DIAGNOSTIC" width={192} height={223} className={className} />
+    : <img src="/brand/logo-horizontal.png" alt="CHERCHE & DIAGNOSTIC" width={640} height={223} className={className} />;
+}
+
+/** Trait de stylo rouge qui entoure un texte, comme un mot entouré sur la grille. */
+export function Circled({ children }: { children: ReactNode }) {
+  return (
+    <span className="circled">
+      <svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M8 22 C 6 8, 40 3, 62 5 S 97 12, 95 22 S 70 38, 45 37 S 3 33, 6 19 S 30 4, 52 4" vectorEffect="non-scaling-stroke" />
+      </svg>
+      {children}
+    </span>
   );
 }
 

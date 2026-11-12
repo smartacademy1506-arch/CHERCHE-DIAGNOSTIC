@@ -61,7 +61,7 @@ export function ChapterHub({ id }: { id: string }) {
           { path: 'glossary', icon: 'list', label: t('ch.glossary'), meta: String(b.terms.length), show: b.terms.length > 0 },
           { path: 'cards', icon: 'cards', label: t('ch.flashcards'), meta: String(b.flashcards.length), show: b.flashcards.length > 0 },
           { path: 'quiz', icon: 'quiz', label: t('ch.quiz'), meta: p.quizBest === null ? String(b.questions.length) : `${Math.round(p.quizBest * 100)} %`, show: b.questions.length > 0 },
-          { path: 'open', icon: 'edit', label: t('ch.open'), meta: String(b.open_questions.length), show: b.open_questions.length > 0 },
+          { path: 'open', icon: 'edit', label: b.open_questions.some((q) => q.model_answer) ? `${t('ch.vignettes')} · ${t('ch.open')}` : t('ch.open'), meta: String(b.open_questions.length), show: b.open_questions.length > 0 },
         ].filter((x) => x.show);
         return (
           <>
@@ -107,12 +107,15 @@ export function Lesson({ id }: { id: string }) {
         <article className="lesson">
           {b.lesson.status !== 'published' && <Tag kind="review">{t('in_review')}</Tag>}
           <Markdown text={tr(b.lesson.summary)} />
-          {b.lesson.key_points.length > 0 && (
-            <section>
-              <h2>{t('ch.key_points')}</h2>
-              <Card className="keypoints"><ul className="bullets">{b.lesson.key_points.map((k, i) => <li key={i}>{tr(k)}</li>)}</ul></Card>
-            </section>
-          )}
+          {([['key', 'ch.key_points', 'keypoints'], ['pitfall', 'ch.pitfalls', 'pitfalls'], ['red_flag', 'ch.redflags', 'redflags']] as const).map(([kind, label, cls]) => {
+            const items = b.lesson!.key_points.filter((k) => ((k as { kind?: string }).kind ?? 'key') === kind);
+            return items.length > 0 && (
+              <section key={kind}>
+                <h2>{t(label)}</h2>
+                <Card className={cls}><ul className="bullets">{items.map((k, i) => <li key={i}>{tr(k)}</li>)}</ul></Card>
+              </section>
+            );
+          })}
           {b.lesson.source_refs.length > 0 && (
             <section>
               <h2>{t('ch.references')}</h2>
@@ -188,7 +191,7 @@ export function OpenQuestions({ id }: { id: string }) {
             const reveal = shown[q.id];
             return (
               <Card key={q.id} className="open-q">
-                <strong>{i + 1}. {tr(q.question)}</strong>
+                <strong>{q.model_answer ? <span className="vignette-tag">{t('ch.vignette')} {i + 1}</span> : `${i + 1}. `}{tr(q.question)}</strong>
                 <label className="field"><span>{t('open.answer')}</span>
                   <textarea rows={5} maxLength={6000} value={text} onChange={(e) => setDrafts((d) => ({ ...d, [q.id]: e.target.value }))} /></label>
                 <div className="row wrap">

@@ -2,7 +2,7 @@
 // Les données (Supabase) ne passent pas par ce cache : elles sont gérées dans IndexedDB par l'application.
 const VERSION = '__APP_VERSION__';
 const CACHE = `cd-shell-${VERSION}`;
-const SHELL = ['/', '/index.html', '/assets/app.js', '/assets/app.css', '/icon.svg', '/icon-192.png', '/icon-512.png', '/manifest.webmanifest'];
+const SHELL = ['/', '/index.html', '/assets/app.js', '/assets/app.css', '/manifest.webmanifest', '/brand/logo-horizontal.png', '/brand/logo-mark.png', '/brand/icon-192.png', '/brand/favicon-48.png', '/fonts/poppins-500.woff', '/fonts/poppins-700.woff'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

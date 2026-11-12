@@ -3,7 +3,7 @@ import { useState, type FormEvent } from 'react';
 import { useApp } from '../app';
 import { UI_LANGS, type Lang } from '../lib/locale';
 import { ApiError, auth } from '../lib/supabase';
-import { Button, Header, Notice } from '../ui';
+import { Button, Header, Logo, Notice } from '../ui';
 
 const LANG_NAMES: Record<Lang, string> = { fr: 'Français', en: 'English', es: 'Español', zh: '中文' };
 
@@ -36,7 +36,7 @@ export function Welcome({ onDone }: { onDone: () => void }) {
   const { t, go } = useApp();
   return (
     <div className="welcome">
-      <img src="/icon.svg" alt="" width="88" height="88" />
+      <Logo className="welcome-logo" />
       <h1>{t('onb.title')}</h1>
       <p className="lead">{t('tagline')}</p>
       <p className="muted">{t('onb.subtitle')}</p>

@@ -1,4 +1,5 @@
 // Mots mêlés : sélection tactile (glisser ou toucher début/fin), détection, définitions, pause, reprise, résultats.
+// Signature graphique : chaque mot trouvé est entouré d'un trait de stylo rouge dessiné en SVG au-dessus de la grille.
 import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
 import { useApp } from '../app';
 import type { ChapterBundle, PuzzleData, Term } from '../lib/data';
@@ -8,6 +9,8 @@ import { ChapterFrame } from './Chapter';
 import { useStudyTimer } from './Home';
 
 interface Cell { r: number; c: number }
+type Path = [Cell, Cell];
+type Placement = PuzzleData['words'][number];
 const key = (r: number, c: number) => `${r},${c}`;
 
 /** Cases entre deux cellules si elles sont alignées (ligne, colonne ou diagonale) ; sinon aligne sur la direction la plus proche. */
@@ -27,18 +30,52 @@ export function lineCells(a: Cell, b: Cell, size: number): Cell[] {
   return out;
 }
 
-/** Mot de la grille correspondant exactement à la sélection (dans un sens ou dans l'autre). */
-export function matchSelection(puzzle: PuzzleData, cells: Cell[]): PuzzleData['words'][number] | null {
+const endOf = (w: Placement): Cell => ({ r: w.row + (w.word.length - 1) * w.d_row, c: w.col + (w.word.length - 1) * w.d_col });
+const canonicalPath = (w: Placement): Path => [{ r: w.row, c: w.col }, endOf(w)];
+
+/**
+ * Mot correspondant à la sélection, dans un sens ou dans l'autre. On accepte l'emplacement enregistré
+ * et, dans les grilles des livres où un mot court peut se lire à deux endroits, toute suite de lettres identique.
+ */
+export function matchSelection(puzzle: PuzzleData, cells: Cell[], found: string[] = []): Placement | null {
   if (cells.length < 2) return null;
   const first = cells[0], last = cells[cells.length - 1];
   for (const w of puzzle.words) {
     if (w.word.length !== cells.length) continue;
-    const endR = w.row + (w.word.length - 1) * w.d_row, endC = w.col + (w.word.length - 1) * w.d_col;
-    const forward = w.row === first.r && w.col === first.c && endR === last.r && endC === last.c;
-    const backward = w.row === last.r && w.col === last.c && endR === first.r && endC === first.c;
+    const end = endOf(w);
+    const forward = w.row === first.r && w.col === first.c && end.r === last.r && end.c === last.c;
+    const backward = w.row === last.r && w.col === last.c && end.r === first.r && end.c === first.c;
     if (forward || backward) return w;
   }
-  return null;
+  const letters = cells.map(({ r, c }) => puzzle.grid[r][c]).join('');
+  const reversed = [...letters].reverse().join('');
+  return puzzle.words.find((w) => !found.includes(w.term_id) && (w.word === letters || w.word === reversed)) ?? null;
+}
+
+/** Contour du trait de stylo : capsule légèrement inclinée autour du mot, en unités de case. */
+function loopGeometry([a, b]: Path, seed: number) {
+  const x1 = a.c + .5, y1 = a.r + .5, x2 = b.c + .5, y2 = b.r + .5;
+  const h = .8;
+  const w = Math.hypot(x2 - x1, y2 - y1) + h + .06;
+  const jitter = seed ? ((seed * 37) % 7 - 3) * .7 : 0; // le stylo ne trace jamais deux fois le même ovale
+  const angle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI + jitter;
+  return { cx: (x1 + x2) / 2, cy: (y1 + y2) / 2, w, h, angle, len: 2 * (w - h) + Math.PI * h };
+}
+
+function Ink({ size, loops, selection, lastId }: { size: number; loops: { id: string; path: Path; seed: number }[]; selection: Cell[]; lastId: string | null }) {
+  const sel = selection.length ? loopGeometry([selection[0], selection[selection.length - 1]], 0) : null;
+  return (
+    <svg className="ws-ink" viewBox={`0 0 ${size} ${size}`} preserveAspectRatio="none" aria-hidden="true">
+      {loops.map(({ id, path, seed }) => {
+        const g = loopGeometry(path, seed);
+        return (
+          <rect key={id} className={`ws-loop${id === lastId ? ' is-new' : ''}`} x={-g.w / 2} y={-g.h / 2} width={g.w} height={g.h} rx={g.h / 2}
+            transform={`translate(${g.cx} ${g.cy}) rotate(${g.angle})`} style={{ ['--len' as string]: g.len }} />
+        );
+      })}
+      {sel && <rect className="ws-select" x={-sel.w / 2} y={-sel.h / 2} width={sel.w} height={sel.h} rx={sel.h / 2} transform={`translate(${sel.cx} ${sel.cy}) rotate(${sel.angle})`} />}
+    </svg>
+  );
 }
 
 export function WordSearchScreen({ id }: { id: string }) {
@@ -47,7 +84,8 @@ export function WordSearchScreen({ id }: { id: string }) {
   return (
     <ChapterFrame id={id} title={t('ch.wordsearch')}>
       {(b) => {
-        const puzzle = b.puzzles.find((p) => p.language_code === cl);
+        // Grille dans la langue du contenu, sinon la grille d'origine en français (traduction en cours de validation).
+        const puzzle = b.puzzles.find((p) => p.language_code === cl) ?? b.puzzles.find((p) => p.language_code === 'fr');
         return puzzle ? <Game key={puzzle.id} puzzle={puzzle} bundle={b} chapterId={id} /> : <Notice>{t('ws.none')}</Notice>;
       }}
     </ChapterFrame>
@@ -55,11 +93,13 @@ export function WordSearchScreen({ id }: { id: string }) {
 }
 
 function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: ChapterBundle; chapterId: string }) {
-  const { t, tr, go, history } = useApp();
+  const { t, tr, go, history, lang } = useApp();
   const saved = history?.puzzles[puzzle.id];
   const resume = saved && !saved.completed ? saved : undefined;
   const sessionId = useRef(resume?.id ?? uuid());
   const [found, setFound] = useState<string[]>(resume?.found ?? []);
+  const [paths, setPaths] = useState<Record<string, Path>>({});
+  const [lastId, setLastId] = useState<string | null>(null);
   const [elapsed, setElapsed] = useState(resume?.elapsed_s ?? 0);
   const [paused, setPaused] = useState(false);
   const [done, setDone] = useState(false);
@@ -74,18 +114,17 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
   elapsedRef.current = elapsed;
 
   const terms = useMemo(() => new Map(bundle.terms.map((x) => [x.id, x])), [bundle]);
+  const byTerm = useMemo(() => new Map(puzzle.words.map((w) => [w.term_id, w])), [puzzle]);
   const total = puzzle.words.length;
+  const loops = useMemo(() => found.map((id, i) => {
+    const w = byTerm.get(id);
+    return w ? { id, path: paths[id] ?? canonicalPath(w), seed: i + 1 } : null;
+  }).filter((x): x is { id: string; path: Path; seed: number } => !!x), [found, paths, byTerm]);
   const foundCells = useMemo(() => {
     const s = new Set<string>();
-    for (const w of puzzle.words) if (found.includes(w.term_id)) for (let i = 0; i < w.word.length; i++) s.add(key(w.row + i * w.d_row, w.col + i * w.d_col));
+    for (const l of loops) for (const c of lineCells(l.path[0], l.path[1], puzzle.size)) s.add(key(c.r, c.c));
     return s;
-  }, [found, puzzle]);
-  // La définition s'efface d'elle-même pour ne pas masquer la grille.
-  useEffect(() => {
-    if (!focus) return;
-    const timer = window.setTimeout(() => setFocus(null), 7000);
-    return () => window.clearTimeout(timer);
-  }, [focus]);
+  }, [loops, puzzle.size]);
   const selCells = useMemo(() => new Set(sel.map((c) => key(c.r, c.c))), [sel]);
 
   const persist = useCallback((list: string[], completed: boolean) => {
@@ -100,6 +139,12 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
     const timer = window.setInterval(() => setElapsed((s) => s + 1), 1000);
     return () => window.clearInterval(timer);
   }, [paused, done]);
+  // La définition s'efface d'elle-même pour ne pas masquer la grille.
+  useEffect(() => {
+    if (!focus) return;
+    const timer = window.setTimeout(() => setFocus(null), 7000);
+    return () => window.clearTimeout(timer);
+  }, [focus]);
   // Sauvegarde périodique et en quittant l'écran : une partie interrompue se reprend là où elle s'est arrêtée.
   const foundRef = useRef(found); foundRef.current = found;
   const doneRef = useRef(done); doneRef.current = done;
@@ -112,14 +157,16 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
   }, [persist]);
 
   function tryCells(cells: Cell[]) {
-    const w = matchSelection(puzzle, cells);
+    const w = matchSelection(puzzle, cells, found);
     if (!w || found.includes(w.term_id)) return false;
     const next = [...found, w.term_id];
     setFound(next);
+    setPaths((p) => ({ ...p, [w.term_id]: [cells[0], cells[cells.length - 1]] }));
+    setLastId(w.term_id);
     setFocus(terms.get(w.term_id) ?? null);
     const complete = next.length === total;
     persist(next, complete);
-    if (complete) setDone(true);
+    if (complete) { setDone(true); setFocus(null); }
     return true;
   }
 
@@ -138,7 +185,7 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
     setTapStart(null); setSel([]);
   }
   const onDown = (e: PointerEvent<HTMLDivElement>) => {
-    if (zoom || paused) return;
+    if (zoom || paused || done) return;
     const cell = cellAt(e); if (!cell) return;
     e.currentTarget.setPointerCapture(e.pointerId);
     dragStart.current = cell; setSel(tapStart ? lineCells(tapStart, cell, puzzle.size) : [cell]);
@@ -158,79 +205,87 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
 
   function restart() {
     sessionId.current = uuid();
-    setFound([]); setElapsed(0); setDone(false); setPaused(false); setSel([]); setTapStart(null); setFocus(null);
+    setFound([]); setPaths({}); setLastId(null); setElapsed(0); setDone(false); setPaused(false); setSel([]); setTapStart(null); setFocus(null);
   }
 
-  if (done) {
-    const missed = puzzle.words.filter((w) => !found.includes(w.term_id));
-    const got = puzzle.words.filter((w) => found.includes(w.term_id));
-    const List = ({ items }: { items: typeof puzzle.words }) => (
-      <dl className="glossary">{items.map((w) => { const x = terms.get(w.term_id); return x ? <div key={w.term_id}><dt>{tr(x.label)}</dt><dd>{tr(x.definition)}</dd></div> : null; })}</dl>
-    );
-    return (
-      <div className="stack">
-        <Card className="result">
-          <h2>{t('ws.done')}</h2>
-          <p className="score">{found.length} / {total}</p>
-          <p className="muted">{t('ws.rate')} : {Math.round((found.length / total) * 100)} % · {formatTime(elapsed)}</p>
-          <div className="row wrap center">
-            <Button icon="repeat" onClick={restart}>{t('ws.restart')}</Button>
-            <Button variant="soft" icon="cards" onClick={() => go(`c/${chapterId}/cards`)}>{t('ch.flashcards')}</Button>
-          </div>
-        </Card>
-        {missed.length > 0 && <section><h2>{t('ws.missed')} ({missed.length})</h2><List items={missed} /></section>}
-        {got.length > 0 && <section><h2>{t('ws.all')} ({got.length})</h2><List items={got} /></section>}
-      </div>
-    );
-  }
+  const missed = puzzle.words.filter((w) => !found.includes(w.term_id));
+  const DefList = ({ items }: { items: Placement[] }) => (
+    <dl className="glossary">{items.map((w) => { const x = terms.get(w.term_id); return x ? <div key={w.term_id}><dt>{tr(x.label)}</dt><dd>{tr(x.definition)}</dd></div> : null; })}</dl>
+  );
 
   return (
     <div className="ws">
       <div className="ws-bar">
-        <strong>{found.length} / {total} {t('ws.found')}</strong>
+        <span className="ws-count" aria-live="polite">{found.length}<small>/ {total} {t('ws.found')}</small></span>
         {showTimer && <span className="ws-time"><Icon name="clock" size={16} /> {formatTime(elapsed)}</span>}
         <span className="grow" />
-        <button type="button" className="icon-btn" onClick={() => setShowTimer((v) => !v)} aria-label={t('ws.timer')} aria-pressed={showTimer}><Icon name="clock" /></button>
-        <button type="button" className="icon-btn" onClick={() => { setZoom((z) => !z); setSel([]); setTapStart(null); }} aria-label={t('ws.zoom')} aria-pressed={zoom}><Icon name="zoom" /></button>
-        <button type="button" className="icon-btn" onClick={() => { setPaused((p) => !p); if (!paused) persist(found, false); }} aria-label={t(paused ? 'ws.resume' : 'ws.pause')}><Icon name={paused ? 'play' : 'pause'} /></button>
+        {!done && <>
+          <button type="button" className="icon-btn" onClick={() => setShowTimer((v) => !v)} aria-label={t('ws.timer')} aria-pressed={showTimer}><Icon name="clock" /></button>
+          <button type="button" className="icon-btn" onClick={() => { setZoom((z) => !z); setSel([]); setTapStart(null); }} aria-label={t('ws.zoom')} aria-pressed={zoom}><Icon name="zoom" /></button>
+          <button type="button" className="icon-btn" onClick={() => { setPaused((p) => !p); if (!paused) persist(found, false); }} aria-label={t(paused ? 'ws.resume' : 'ws.pause')}><Icon name={paused ? 'play' : 'pause'} /></button>
+        </>}
       </div>
       <Bar value={found.length / total} />
-      <p className="small muted">{t('ws.hint')}</p>
+      {/* Zone réservée au-dessus de la grille : consigne, puis définition du dernier mot trouvé. Hauteur fixe : la grille ne bouge pas. */}
+      {!done && (
+        <div className="ws-note" aria-live="polite">
+          {focus ? (
+            <div className="ws-def">
+              <p><strong>{tr(focus.label)}</strong> — {tr(focus.definition)}</p>
+              <button type="button" className="icon-btn" onClick={() => setFocus(null)} aria-label={t('close')}><Icon name="x" size={18} /></button>
+            </div>
+          ) : <p className="ws-hint">{t('ws.hint')}</p>}
+        </div>
+      )}
 
-      <div className={`ws-scroll${zoom ? ' ws-zoom' : ''}`}>
+      <div className={`ws-scroll${zoom && !done ? ' ws-zoom' : ''}`}>
         {paused ? (
-          <div className="ws-paused"><p>{t('ws.paused')}</p><Button icon="play" onClick={() => setPaused(false)}>{t('ws.resume')}</Button></div>
+          <div className="ws-sheet"><div className="ws-paused"><p>{t('ws.paused')}</p><Button icon="play" onClick={() => setPaused(false)}>{t('ws.resume')}</Button></div></div>
         ) : (
-          <div ref={gridRef} className="ws-grid" data-testid="ws-grid" style={{ gridTemplateColumns: `repeat(${puzzle.size}, 1fr)`, ['--n' as string]: puzzle.size }}
-            onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={() => { dragStart.current = null; setSel([]); }}
-            onClick={zoom ? (e) => { const c = cellAt(e); if (c) tap(c); } : undefined}>
-            {puzzle.grid.map((line, r) => [...line].map((ch, c) => {
-              const k = key(r, c);
-              return <span key={k} className={`ws-cell${foundCells.has(k) ? ' is-found' : ''}${selCells.has(k) ? ' is-sel' : ''}`}>{ch}</span>;
-            }))}
+          <div className="ws-sheet">
+            <div ref={gridRef} className="ws-grid" data-testid="ws-grid" lang={lang} style={{ gridTemplateColumns: `repeat(${puzzle.size}, 1fr)`, ['--n' as string]: puzzle.size }}
+              onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={() => { dragStart.current = null; setSel([]); }}
+              onClick={zoom && !done ? (e) => { const c = cellAt(e); if (c) tap(c); } : undefined}>
+              {puzzle.grid.map((line, r) => [...line].map((ch, c) => {
+                const k = key(r, c);
+                return <span key={k} className={`ws-cell${foundCells.has(k) ? ' is-found' : ''}${selCells.has(k) ? ' is-sel' : ''}`}>{ch}</span>;
+              }))}
+              <Ink size={puzzle.size} loops={loops} selection={sel} lastId={lastId} />
+            </div>
+            {done && <div className="ws-stamp" role="status">{t('ws.solved')}</div>}
           </div>
         )}
       </div>
 
-      {focus && (
-        <Card className="ws-def">
-          <button type="button" className="icon-btn" onClick={() => setFocus(null)} aria-label={t('close')}><Icon name="x" size={18} /></button>
-          <strong>{tr(focus.label)}</strong>
-          <p>{tr(focus.definition)}</p>
-        </Card>
+      {done ? (
+        <div className="stack">
+          <Card className="result">
+            <h2>{t('ws.done')}</h2>
+            <p className="score">{found.length} / {total}</p>
+            <p className="muted">{t('ws.rate')} : {Math.round((found.length / total) * 100)} % · {formatTime(elapsed)}</p>
+            <div className="row wrap center">
+              <Button icon="repeat" onClick={restart}>{t('ws.restart')}</Button>
+              <Button variant="soft" icon="cards" onClick={() => go(`c/${chapterId}/cards`)}>{t('ch.flashcards')}</Button>
+            </div>
+          </Card>
+          {missed.length > 0 && <section><h2>{t('ws.missed')} ({missed.length})</h2><DefList items={missed} /></section>}
+          {found.length > 0 && <section><h2>{t('ws.all')} ({found.length})</h2><DefList items={puzzle.words.filter((w) => found.includes(w.term_id))} /></section>}
+        </div>
+      ) : (
+        <>
+          <ol className="ws-list" aria-label={t('ch.glossary')}>
+            {puzzle.words.map((w) => {
+              const x = terms.get(w.term_id); const ok = found.includes(w.term_id);
+              return (
+                <li key={w.term_id} className={ok ? 'is-found' : undefined}>
+                  <button type="button" disabled={!ok} onClick={() => x && setFocus(x)}>{x ? tr(x.label) : w.word}</button>
+                </li>
+              );
+            })}
+          </ol>
+          <Button variant="ghost" onClick={() => { persist(found, true); setDone(true); setFocus(null); }}>{t('ws.end')}</Button>
+        </>
       )}
-
-      <ul className="ws-words" aria-label={t('ch.glossary')}>
-        {puzzle.words.map((w) => {
-          const x = terms.get(w.term_id); const ok = found.includes(w.term_id);
-          return (
-            <li key={w.term_id}>
-              <button type="button" className={`chip${ok ? ' chip-found' : ''}`} disabled={!ok} onClick={() => x && setFocus(x)}>{x ? tr(x.label) : w.word}</button>
-            </li>
-          );
-        })}
-      </ul>
-      <Button variant="ghost" onClick={() => { persist(found, true); setDone(true); }}>{t('ws.end')}</Button>
     </div>
   );
 }

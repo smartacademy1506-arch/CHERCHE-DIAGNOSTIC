@@ -22,6 +22,7 @@ await build({
   jsx: 'automatic',
   outfile: join(dist, 'assets/app.js'),
   loader: { '.css': 'css' },
+  external: ['/fonts/*', '/brand/*'], // fichiers servis tels quels depuis public/
   define: {
     'process.env.NODE_ENV': '"production"',
     __APP_VERSION__: JSON.stringify(version),
@@ -34,11 +35,4 @@ await build({
 const sw = join(dist, 'sw.js');
 writeFileSync(sw, readFileSync(sw, 'utf8').replace('__APP_VERSION__', version));
 
-// Icônes PNG pour l'installation (générées depuis le SVG si sharp est disponible).
-try {
-  const sharp = (await import('sharp')).default;
-  for (const size of [192, 512]) await sharp(join(root, 'public/icon.svg')).resize(size, size).png().toFile(join(dist, `icon-${size}.png`));
-} catch {
-  console.warn('sharp indisponible : icônes PNG non générées');
-}
 console.log(`Build ${version} terminé → dist/`);

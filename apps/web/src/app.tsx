@@ -6,7 +6,7 @@ import { browserLang, contentLang, detectCountry, UI_LANGS, type Lang } from './
 import type { Currency, Plan } from './lib/pricing';
 import { flushOutbox, getHistory, onHistoryChange, pullHistory, type History } from './lib/store';
 import { auth, db, getSession, onSessionChange, type Session } from './lib/supabase';
-import { Icon } from './ui';
+import { Icon, Logo } from './ui';
 
 export interface Refs {
   languages: { code: string; native_name: string; is_content_language: boolean }[];
@@ -166,12 +166,19 @@ const TABS: { path: string; key: string; icon: string }[] = [
 export function Shell({ children }: { children: ReactNode }) {
   const { t, route, go, online, access, lang } = useApp();
   const active = route[0] === 'd' || route[0] === 'c' ? 'learn' : route[0] === 'plans' || route[0] === 'admin' ? 'me' : route[0] ?? '';
+  // La manchette n'apparaît que sur les rubriques principales : dans un chapitre, la grille garde toute la hauteur.
+  const topLevel = route.length === 0 || (route.length === 1 && ['learn', 'review', 'stats', 'me'].includes(route[0]));
   return (
     <div className="shell">
+      {topLevel && (
+        <header className="masthead">
+          <button type="button" className="icon-btn" style={{ width: 'auto', height: 'auto', padding: 0 }} onClick={() => go('')} aria-label={t('nav.home')}><Logo /></button>
+          <span className="tagline">{t('tagline')}</span>
+        </header>
+      )}
       <nav className="nav" aria-label="Navigation">
-        <button type="button" className="brand" onClick={() => go('')}>
-          <img src="/icon.svg" alt="" width="32" height="32" />
-          <span>CHERCHE &amp; DIAGNOSTIC</span>
+        <button type="button" className="brand" onClick={() => go('')} aria-label={t('nav.home')}>
+          <Logo />
         </button>
         {TABS.map((tab) => (
           <button key={tab.path} type="button" className={`nav-item${active === tab.path ? ' active' : ''}`} onClick={() => go(tab.path)} aria-current={active === tab.path ? 'page' : undefined}>

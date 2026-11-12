@@ -103,6 +103,7 @@ async function step(name, fn) {
   catch (e) { results.push([name, false]); console.log(`FAIL ${name}\n     ${String(e.message).split('\n')[0]}`); }
 }
 const expectText = async (page, text) => { await page.getByText(text, { exact: false }).first().waitFor({ timeout: 6000 }); };
+const expectCount = async (page, n, total) => { await page.locator('.ws-count').filter({ hasText: new RegExp(`^${n}\\s*/\\s*${total}\\b`) }).waitFor({ timeout: 6000 }); };
 
 const { page, errors } = await newPage({ width: 390, height: 844 });
 const free = chapters[0];
@@ -143,8 +144,7 @@ await step('cours : résumé, points essentiels, références, marquage « lu »
 
 async function cellCenter(p, r, c) {
   const box = await p.getByTestId('ws-grid').boundingBox();
-  const inner = box.width - 10; // bordure + marge intérieure
-  return { x: box.x + 5 + (c + 0.5) * (inner / puzzle.size), y: box.y + 5 + (r + 0.5) * (inner / puzzle.size) };
+  return { x: box.x + (c + 0.5) * (box.width / puzzle.size), y: box.y + (r + 0.5) * (box.height / puzzle.size) };
 }
 async function dragWord(p, w) {
   const a = await cellCenter(p, w.start_row, w.start_col);
@@ -155,11 +155,12 @@ async function dragWord(p, w) {
 await step('mots mêlés : glisser sur un mot le valide et affiche sa définition', async () => {
   await page.goto(`${base}/#/c/${free.row.id}/ws`);
   await page.getByTestId('ws-grid').waitFor();
-  await expectText(page, `0 / ${puzzle.puzzle_words.length} trouvés`);
+  await expectCount(page, 0, puzzle.puzzle_words.length);
   await dragWord(page, puzzle.puzzle_words[0]);
-  await expectText(page, `1 / ${puzzle.puzzle_words.length} trouvés`);
+  await expectCount(page, 1, puzzle.puzzle_words.length);
   const term = free.medical_terms.find((t) => t.id === puzzle.puzzle_words[0].term_id);
   await expectText(page, term.glossary_entries.definition.fr.slice(0, 40));
+  await page.waitForTimeout(800);
   await page.screenshot({ path: join(shots, '06-mots-meles.png') });
 });
 
@@ -167,11 +168,11 @@ await step('mots mêlés : une sélection fausse ne valide rien ; toucher début
   const w = puzzle.puzzle_words[1];
   const a = await cellCenter(page, 0, 0), b = await cellCenter(page, 0, 1);
   await page.mouse.move(a.x, a.y); await page.mouse.down(); await page.mouse.move(b.x, b.y); await page.mouse.up();
-  await expectText(page, `1 / ${puzzle.puzzle_words.length} trouvés`);
+  await expectCount(page, 1, puzzle.puzzle_words.length);
   const s = await cellCenter(page, w.start_row, w.start_col);
   const e = await cellCenter(page, w.start_row + (w.word.length - 1) * w.d_row, w.start_col + (w.word.length - 1) * w.d_col);
   await page.mouse.click(s.x, s.y); await page.mouse.click(e.x, e.y);
-  await expectText(page, `2 / ${puzzle.puzzle_words.length} trouvés`);
+  await expectCount(page, 2, puzzle.puzzle_words.length);
 });
 
 await step('mots mêlés : la partie interrompue reprend avec les mots déjà trouvés', async () => {
@@ -184,7 +185,7 @@ await step('mots mêlés : la partie interrompue reprend avec les mots déjà tr
   }, puzzle.id, { timeout: 5000 });
   await page.reload();
   await page.getByTestId('ws-grid').waitFor();
-  await expectText(page, `2 / ${puzzle.puzzle_words.length} trouvés`);
+  await expectCount(page, 2, puzzle.puzzle_words.length);
   await page.getByRole('button', { name: 'Pause' }).click();
   await expectText(page, 'Partie en pause');
   await page.getByRole('button', { name: 'Reprendre' }).first().click();
@@ -284,12 +285,25 @@ const desk = await newPage({ width: 1280, height: 800 });
 await step('ordinateur : navigation latérale et mise en page large', async () => {
   await desk.page.goto(base);
   await desk.page.getByRole('button', { name: 'Commencer' }).click();
-  await expectText(desk.page, 'CHERCHE & DIAGNOSTIC');
+  await desk.page.getByRole('img', { name: 'CHERCHE & DIAGNOSTIC' }).first().waitFor({ timeout: 6000 });
   await desk.page.goto(`${base}/#/c/${free.row.id}/ws`);
   await desk.page.getByTestId('ws-grid').waitFor();
   await desk.page.screenshot({ path: join(shots, '14-ordinateur-grille.png') });
   await desk.page.goto(`${base}/#/admin`);
   await expectText(desk.page, 'Accès réservé à l\'équipe.');
+});
+
+await step('rendu : plusieurs mots entourés au stylo sur un téléphone de 360 px', async () => {
+  const v = await newPage({ width: 360, height: 780 });
+  await v.page.goto(base);
+  await v.page.getByRole('button', { name: 'Commencer' }).click();
+  await v.page.goto(`${base}/#/c/${free.row.id}/ws`);
+  await v.page.getByTestId('ws-grid').waitFor();
+  for (const w of puzzle.puzzle_words.slice(0, 9)) await dragWord(v.page, w);
+  await expectCount(v.page, 9, puzzle.puzzle_words.length);
+  await v.page.waitForTimeout(800);
+  await v.page.screenshot({ path: join(shots, '15-grille-entouree.png') });
+  if (v.errors.length) throw new Error(v.errors[0]);
 });
 
 await step('aucune erreur JavaScript pendant les scénarios', async () => {

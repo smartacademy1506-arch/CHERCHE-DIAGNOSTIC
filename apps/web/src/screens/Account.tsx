@@ -6,7 +6,7 @@ import { formatPrice, localAmount } from '../lib/pricing';
 import { flushOutbox, outboxCount } from '../lib/store';
 import { auth, db } from '../lib/supabase';
 import { APP_VERSION } from '../lib/config';
-import { Button, Card, Header, Icon, Loader, Notice, Tag } from '../ui';
+import { Button, Card, Circled, Header, Icon, Loader, Notice, Tag } from '../ui';
 import { LangCountryPickers } from './Auth';
 
 export function Plans() {
@@ -18,6 +18,13 @@ export function Plans() {
   const cur = refs.currencies.find((c) => c.code === currency) ?? refs.currencies.find((c) => c.code === 'USD')!;
   const usd = refs.currencies.find((c) => c.code === 'USD')!;
   const period: Record<string, string> = { month: t('plans.month'), year: t('plans.year'), lifetime: t('plans.lifetime') };
+  const priceIn = (code: string) => {
+    const p = refs.plans.find((x) => x.code === code);
+    if (!p) return null;
+    const override = refs.planPrices.find((x) => x.plan_id === p.id && x.currency_code === cur.code)?.amount;
+    return localAmount(Number(p.price_usd), cur, override);
+  };
+  const monthly = priceIn('monthly');
 
   async function choose(code: string) {
     if (!session) { go('auth'); return; }
@@ -28,13 +35,13 @@ export function Plans() {
   }
 
   return (
-    <div className="page">
+    <div className="page wide">
       <Header title={t('plans.title')} onBack={back} right={
         <label className="field inline"><span className="sr-only">{t('plans.currency')}</span>
           <select value={cur.code} onChange={(e) => setCurrency(e.target.value)} aria-label={t('plans.currency')}>
             {refs.currencies.map((c) => <option key={c.code} value={c.code}>{c.code} — {c.name}</option>)}
           </select></label>} />
-      <p className="muted">{t('plans.subtitle')}</p>
+      <p className="lead" style={{ color: 'var(--navy)' }}>{t('plans.subtitle')}</p>
       {access.subscription && (
         <Notice kind="ok">{t('plans.current')} : <strong>{refs.plans.find((p) => p.code === access.subscription!.plan_code)?.name[lang] ?? access.subscription.plan_code}</strong>
           {' — '}{access.subscription.ends_at ? `${t('plans.until')} ${new Date(access.subscription.ends_at).toLocaleDateString(lang)}` : t('plans.forever')}</Notice>
@@ -46,23 +53,40 @@ export function Plans() {
       {error && <Notice kind="error">{error}</Notice>}
       <div className="plans">
         {refs.plans.map((p) => {
-          const override = refs.planPrices.find((x) => x.plan_id === p.id && x.currency_code === cur.code)?.amount;
-          const amount = localAmount(Number(p.price_usd), cur, override);
+          const amount = priceIn(p.code) ?? 0;
+          const months = p.billing_period === 'year' ? 12 : 0;
+          const saving = months && monthly ? Math.round((1 - amount / (monthly * months)) * 100) : 0;
+          const current = access.subscription?.plan_code === p.code;
           return (
-            <Card key={p.id} className={`plan${p.is_featured ? ' plan-featured' : ''}`}>
-              {p.is_featured && <Tag kind="premium"><Icon name="star" size={14} /> {t('plans.best')}</Tag>}
-              <h2>{p.name[lang] ?? p.name.en}</h2>
+            <article key={p.id} className={`card plan${p.is_featured ? ' plan-featured' : ''}`}>
+              <div className="row wrap" style={{ justifyContent: 'space-between' }}>
+                <h2>{p.name[lang] ?? p.name.en}</h2>
+                {p.is_featured && <Tag kind="premium">{t('plans.best')}</Tag>}
+              </div>
               <p className="price" data-testid={`price-${p.code}`}>{formatPrice(amount, cur, lang)}</p>
-              <p className="muted small">{period[p.billing_period]}{cur.code !== 'USD' && <> · {formatPrice(Number(p.price_usd), usd, lang)}</>}</p>
+              <p className="per">
+                {period[p.billing_period]}
+                {months > 0 && <> · {t('plans.equiv').replace('{x}', formatPrice(amount / months, { ...cur, decimals: Math.max(cur.decimals, cur.code === 'USD' ? 2 : 0) }, lang))}</>}
+                {cur.code !== 'USD' && <> · {formatPrice(Number(p.price_usd), usd, lang)}</>}
+              </p>
+              {saving > 0 && <p><Circled>{t('plans.save').replace('{n}', String(saving))}</Circled></p>}
               <p>{p.description[lang] ?? p.description.en}</p>
               <ul className="bullets">{p.features.map((f, i) => <li key={i}>{f[lang] ?? f.en}</li>)}</ul>
-              <Button block variant={p.is_featured ? 'primary' : 'soft'} disabled={busy === p.code} onClick={() => void choose(p.code)}>{t('plans.choose')}</Button>
-            </Card>
+              <Button block variant="primary" disabled={busy === p.code || current} onClick={() => void choose(p.code)}>{current ? t('plans.current') : t('plans.choose')}</Button>
+            </article>
           );
         })}
       </div>
-      {!session && <p className="small muted center">{t('plans.login')}</p>}
-      {cur.code !== 'USD' && <p className="small muted center">{t('plans.converted')}</p>}
+      <section>
+        <h2>{t('plans.free_title')}</h2>
+        <p>{t('plans.free_text')}</p>
+      </section>
+      <section>
+        <h2>{t('plans.how_title')}</h2>
+        <p>{t('plans.how_text')}</p>
+        {!session && <p className="small muted" style={{ marginTop: '.5rem' }}>{t('plans.login')}</p>}
+        {cur.code !== 'USD' && <p className="small muted" style={{ marginTop: '.5rem' }}>{t('plans.converted')}</p>}
+      </section>
     </div>
   );
 }
