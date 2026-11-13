@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "apps/web/src/styles.css"
+        ],
+        "createdAt": "2026-11-13T03:06:25.277Z",
+        "reason": "agent + finish reviewer: .ws-def has border-radius:0, the 3px pen rule sits on a square top edge; false positive"
+      }
+    ]
+  }
+}
