@@ -1,4 +1,4 @@
-"""Génère les modèles d'e-mails d'authentification Supabase aux couleurs de CHERCHE & DIAGNOSTIC.
+"""Génère les modèles d'e-mails d'authentification Supabase selon le design system Cherche & Diagnostic.
 
 Usage : python3 -I tools/email/build_templates.py
 Sortie : supabase/templates/<modèle>.html et supabase/templates/subjects.json
@@ -69,11 +69,11 @@ def block(kind: str, lang: str) -> str:
     title, body, cta = TEXT[kind][lang]
     note, fallback = FOOTER[lang]
     return f'''
-<tr><td style="padding:28px 32px 8px;font-family:Poppins,Segoe UI,Arial,sans-serif;font-size:22px;font-weight:700;color:#003562;line-height:1.3">{escape(title)}</td></tr>
-<tr><td style="padding:0 32px 24px;font-family:Segoe UI,Arial,sans-serif;font-size:15px;line-height:1.6;color:#0e2238">{keep_vars(body)}</td></tr>
-<tr><td style="padding:0 32px 28px"><a href="{{{{ .ConfirmationURL }}}}" style="display:inline-block;background:#003562;color:#ffffff;font-family:Segoe UI,Arial,sans-serif;font-size:15px;font-weight:600;text-decoration:none;padding:13px 22px;border-radius:6px">{escape(cta)}</a></td></tr>
-<tr><td style="padding:0 32px 24px;font-family:Segoe UI,Arial,sans-serif;font-size:13px;line-height:1.5;color:#4a5c70">{escape(note)}<br><br>{escape(fallback)}<br><a href="{{{{ .ConfirmationURL }}}}" style="color:#0b5f86;word-break:break-all">{{{{ .ConfirmationURL }}}}</a></td></tr>
-<tr><td style="padding:16px 32px 24px;border-top:1px solid #d5dde7;font-family:Segoe UI,Arial,sans-serif;font-size:12px;color:#4a5c70">CHERCHE &amp; DIAGNOSTIC — {escape(TAGLINE[lang])}</td></tr>'''
+<tr><td style="padding:28px 32px 8px;font-family:Poppins,Segoe UI,Arial,sans-serif;font-size:24px;font-weight:700;color:#012d69;line-height:30px">{escape(title)}</td></tr>
+<tr><td style="padding:0 32px 24px;font-family:Poppins,Segoe UI,Arial,sans-serif;font-size:16px;line-height:24px;color:#012d69">{keep_vars(body)}</td></tr>
+<tr><td style="padding:0 32px 28px"><a href="{{{{ .ConfirmationURL }}}}" style="display:inline-block;background:#012d69;color:#ffffff;font-family:Poppins,Segoe UI,Arial,sans-serif;font-size:16px;font-weight:500;text-decoration:none;padding:12px 16px;border-radius:10px">{escape(cta)}</a></td></tr>
+<tr><td style="padding:0 32px 24px;font-family:Poppins,Segoe UI,Arial,sans-serif;font-size:14px;line-height:20px;color:#43608a">{escape(note)}<br><br>{escape(fallback)}<br><a href="{{{{ .ConfirmationURL }}}}" style="color:#0067b5;word-break:break-all">{{{{ .ConfirmationURL }}}}</a></td></tr>
+<tr><td style="padding:16px 32px 24px;border-top:1px solid #cddbec;font-family:Poppins,Segoe UI,Arial,sans-serif;font-size:12px;line-height:16px;color:#43608a">CHERCHE &amp; DIAGNOSTIC — {escape(TAGLINE[lang])}</td></tr>'''
 
 
 def template(kind: str) -> str:
@@ -83,10 +83,10 @@ def template(kind: str) -> str:
     rows = ''.join(branches) + '{{ else }}' + block(kind, 'fr') + '{{ end }}'
     return f'''<!DOCTYPE html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CHERCHE &amp; DIAGNOSTIC</title></head>
-<body style="margin:0;padding:0;background:#f1f4f8">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f1f4f8;padding:24px 12px"><tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border:1px solid #d5dde7;border-radius:6px">
-<tr><td style="padding:24px 32px 18px;border-bottom:4px double #003562"><img src="{SITE}/brand/logo-horizontal.png" width="220" alt="CHERCHE &amp; DIAGNOSTIC" style="display:block;width:220px;height:auto;border:0"></td></tr>
+<body style="margin:0;padding:0;background:#f4f8fd">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f8fd;padding:24px 12px"><tr><td align="center">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border:1px solid #cddbec;border-radius:16px;box-shadow:0 1px 3px rgba(1,48,92,.14)">
+<tr><td style="padding:24px 32px 16px;border-bottom:1px solid #cddbec"><img src="{SITE}/brand/logo-horizontal.png" width="200" alt="Cherche &amp; Diagnostic" style="display:block;width:200px;height:auto;border:0"></td></tr>
 {rows}
 </table></td></tr></table>
 </body></html>

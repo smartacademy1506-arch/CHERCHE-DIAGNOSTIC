@@ -33,13 +33,14 @@ const ICONS: Record<string, string> = {
 
 export function Icon({ name, size = 20 }: { name: string; size?: number }) {
   return (
-    <svg className="icon" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg className="icon" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d={ICONS[name] ?? ICONS.book} />
     </svg>
   );
 }
 
-type BtnProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'ghost' | 'danger' | 'soft'; icon?: string; block?: boolean };
+/** Variantes du design system : primaire (marine), secondaire (« soft »), discrète (« ghost »), danger, et « diagnostic » (rouge, une fois par écran, pour valider). */
+type BtnProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'ghost' | 'danger' | 'soft' | 'diagnostic'; icon?: string; block?: boolean };
 export function Button({ variant = 'primary', icon, block, children, className = '', ...rest }: BtnProps) {
   return (
     <button type="button" className={`btn btn-${variant}${block ? ' btn-block' : ''} ${className}`} {...rest}>
@@ -65,23 +66,21 @@ export function Ring({ value, label }: { value: number; size?: number; label?: s
   );
 }
 
-/** Logo fourni par l'utilisateur (assets/brand), servi depuis /brand. */
-export function Logo({ variant = 'horizontal', className }: { variant?: 'horizontal' | 'mark'; className?: string }) {
-  return variant === 'mark'
-    ? <img src="/brand/logo-mark.png" alt="CHERCHE & DIAGNOSTIC" width={192} height={223} className={className} />
-    : <img src="/brand/logo-horizontal.png" alt="CHERCHE & DIAGNOSTIC" width={640} height={223} className={className} />;
+/** Logo du design system, en aplats (public/brand, généré par tools/brand/build_logo.py) ; version inverse en thème sombre. */
+export function Logo({ variant = 'horizontal', className }: { variant?: 'horizontal' | 'vertical' | 'symbole'; className?: string }) {
+  if (variant === 'vertical') return <img src="/brand/logo-vertical.svg" alt="Cherche & Diagnostic" width={1089} height={1146} className={className} />;
+  if (variant === 'symbole') return <img src="/brand/symbole.svg" alt="Cherche & Diagnostic" width={814} height={747} className={className} />;
+  return (
+    <picture className={className}>
+      <source srcSet="/brand/logo-horizontal-inverse.svg" media="(prefers-color-scheme: dark)" />
+      <img src="/brand/logo-horizontal.svg" alt="Cherche & Diagnostic" width={887} height={240} />
+    </picture>
+  );
 }
 
-/** Trait de stylo rouge qui entoure un texte, comme un mot entouré sur la grille. */
-export function Circled({ children }: { children: ReactNode }) {
-  return (
-    <span className="circled">
-      <svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M8 22 C 6 8, 40 3, 62 5 S 97 12, 95 22 S 70 38, 45 37 S 3 33, 6 19 S 30 4, 52 4" vectorEffect="non-scaling-stroke" />
-      </svg>
-      {children}
-    </span>
-  );
+/** Badge du design system : pastille, étiquette en capitales. */
+export function Badge({ tone = 'ciel', children }: { tone?: 'ciel' | 'marine' | 'succes' | 'alerte' | 'danger' | 'neutre'; children: ReactNode }) {
+  return <span className={`badge badge-${tone}`}>{children}</span>;
 }
 
 export function Bar({ value }: { value: number }) {

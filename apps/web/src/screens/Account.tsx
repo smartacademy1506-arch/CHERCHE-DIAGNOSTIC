@@ -6,7 +6,7 @@ import { formatPrice, localAmount } from '../lib/pricing';
 import { flushOutbox, outboxCount } from '../lib/store';
 import { auth, db } from '../lib/supabase';
 import { APP_VERSION } from '../lib/config';
-import { Button, Card, Circled, Header, Icon, Loader, Notice } from '../ui';
+import { Badge, Button, Card, Header, Icon, Loader, Notice } from '../ui';
 import { LangCountryPickers } from './Auth';
 
 export function Plans() {
@@ -68,7 +68,7 @@ export function Plans() {
                 {months > 0 && <> · {t('plans.equiv').replace('{x}', formatPrice(amount / months, { ...cur, decimals: Math.max(cur.decimals, cur.code === 'USD' ? 2 : 0) }, lang))}</>}
                 {cur.code !== 'USD' && <> · {formatPrice(Number(p.price_usd), usd, lang)}</>}
               </p>
-              {saving > 0 && <p><Circled>{t('plans.save').replace('{n}', String(saving))}</Circled></p>}
+              {saving > 0 && <Badge tone="ciel">{t('plans.save').replace('{n}', String(saving))}</Badge>}
               <p>{p.description[lang] ?? p.description.en}</p>
               <ul className="bullets">{p.features.map((f, i) => <li key={i}>{f[lang] ?? f.en}</li>)}</ul>
               <Button block variant="primary" disabled={busy === p.code || current} onClick={() => void choose(p.code)}>{current ? t('plans.current') : t('plans.choose')}</Button>

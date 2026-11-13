@@ -83,8 +83,8 @@ const results = [];
 let offline = false;
 const browser = await chromium.launch();
 
-async function newPage(viewport, locale = 'fr-FR') {
-  const ctx = await browser.newContext({ viewport, locale, timezoneId: 'Africa/Douala', hasTouch: viewport.width < 600 });
+async function newPage(viewport, locale = 'fr-FR', colorScheme = 'light') {
+  const ctx = await browser.newContext({ viewport, locale, colorScheme, timezoneId: 'Africa/Douala', hasTouch: viewport.width < 600 });
   const page = await ctx.newPage();
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
@@ -325,6 +325,22 @@ await step('rendu : plusieurs mots entourés au stylo sur un téléphone de 360 
   await expectCount(v.page, 11, puzzle.puzzle_words.length);
   await v.page.waitForTimeout(800);
   await v.page.screenshot({ path: join(shots, '15-grille-entouree.png') });
+  if (v.errors.length) throw new Error(v.errors[0]);
+});
+
+await step('rendu : thème sombre du design system (accueil et grille)', async () => {
+  const v = await newPage({ width: 390, height: 844 }, 'fr-FR', 'dark');
+  await v.page.goto(base);
+  await v.page.getByRole('button', { name: 'Commencer' }).click();
+  const bg = await v.page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  if (bg !== 'rgb(0, 17, 43)') throw new Error(`fond sombre attendu (#00112b), obtenu ${bg}`);
+  await v.page.screenshot({ path: join(shots, '16-sombre-accueil.png') });
+  await v.page.goto(`${base}/#/c/${free.row.id}/ws`);
+  await v.page.getByTestId('ws-grid').waitFor();
+  for (const w of puzzle.puzzle_words.slice(0, 5)) await dragWord(v.page, w);
+  await expectCount(v.page, 5, puzzle.puzzle_words.length);
+  await v.page.waitForTimeout(400);
+  await v.page.screenshot({ path: join(shots, '17-sombre-grille.png') });
   if (v.errors.length) throw new Error(v.errors[0]);
 });
 

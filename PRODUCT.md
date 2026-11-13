@@ -48,8 +48,9 @@ outils (QCM, flashcards, statistiques) servent la révision autour de ces grille
 - Signature : « Apprends. Révise. Progresse. »
 - Logo fourni par l'utilisateur le 12/11/2026 (assets/brand/*-source.png) : loupe formant un « C », croix rouge, livre
   ouvert ; lettrage géométrique gras, « CHERCHE » en bleu marine, « & » en bleu ciel, « DIAGNOSTIC » en rouge.
-  Couleurs relevées sur le logo : bleu marine #003562, rouge #CD1A1C, bleu ciel #30A8E0. Le logo s'emploie tel quel,
-  sans le redessiner.
+  Depuis le 13/11/2026, l'identité suit le design system « Cherche & Diagnostic » du propriétaire (artefact claude.ai
+  c8bd9b69) : logo redessiné en vectoriel et en aplats (marine #012d69, ciel #079cef, rouge #d80403), tokens clair et
+  sombre, Poppins seule. Détail et règles : DESIGN.md.
 - Direction artistique imposée par le cahier des charges : bleu médical profond, blanc dominant pour la lecture, rouge
   réservé aux alertes et accents ; sérieux académique, innovation ; ne copier aucune application existante.
 

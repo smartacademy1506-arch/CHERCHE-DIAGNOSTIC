@@ -1,5 +1,6 @@
 // Mots mêlés : sélection tactile (glisser ou toucher début/fin), détection, définitions, pause, reprise, résultats.
-// Signature graphique : chaque mot trouvé est entouré d'un trait de stylo rouge dessiné en SVG au-dessus de la grille.
+// Design system : chaque mot trouvé est surligné d'une pastille (ciel, rouge, ambre, marine en alternance) sous les lettres,
+// qui restent à l'encre du texte ; la sélection en cours prend la couleur primaire.
 import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
 import { useApp } from '../app';
 import type { ChapterBundle, PuzzleData, Term } from '../lib/data';
@@ -52,25 +53,27 @@ export function matchSelection(puzzle: PuzzleData, cells: Cell[], found: string[
   return puzzle.words.find((w) => !found.includes(w.term_id) && (w.word === letters || w.word === reversed)) ?? null;
 }
 
-/** Contour du trait de stylo : capsule légèrement inclinée autour du mot, en unités de case. */
-function loopGeometry([a, b]: Path, seed: number) {
+/** Couleurs de surlignage du design system, dans l'ordre où les mots sont trouvés. */
+export const HIGHLIGHTS = ['ciel', 'rouge', 'ambre', 'marine'] as const;
+
+/** Pastille d'un mot : capsule de 0,8 case de haut alignée sur le mot, en unités de case. */
+function loopGeometry([a, b]: Path) {
   const x1 = a.c + .5, y1 = a.r + .5, x2 = b.c + .5, y2 = b.r + .5;
   const h = .8;
-  const w = Math.hypot(x2 - x1, y2 - y1) + h + .06;
-  const jitter = seed ? ((seed * 37) % 7 - 3) * .7 : 0; // le stylo ne trace jamais deux fois le même ovale
-  const angle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI + jitter;
-  return { cx: (x1 + x2) / 2, cy: (y1 + y2) / 2, w, h, angle, len: 2 * (w - h) + Math.PI * h };
+  const w = Math.hypot(x2 - x1, y2 - y1) + h;
+  const angle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
+  return { cx: (x1 + x2) / 2, cy: (y1 + y2) / 2, w, h, angle };
 }
 
 function Ink({ size, loops, selection, lastId }: { size: number; loops: { id: string; path: Path; seed: number }[]; selection: Cell[]; lastId: string | null }) {
-  const sel = selection.length ? loopGeometry([selection[0], selection[selection.length - 1]], 0) : null;
+  const sel = selection.length ? loopGeometry([selection[0], selection[selection.length - 1]]) : null;
   return (
     <svg className="ws-ink" viewBox={`0 0 ${size} ${size}`} preserveAspectRatio="none" aria-hidden="true">
-      {loops.map(({ id, path, seed }) => {
-        const g = loopGeometry(path, seed);
+      {loops.map(({ id, path }, i) => {
+        const g = loopGeometry(path);
         return (
-          <rect key={id} className={`ws-loop${id === lastId ? ' is-new' : ''}`} x={-g.w / 2} y={-g.h / 2} width={g.w} height={g.h} rx={g.h / 2}
-            transform={`translate(${g.cx} ${g.cy}) rotate(${g.angle})`} style={{ ['--len' as string]: g.len }} />
+          <rect key={id} className={`ws-hl ws-hl-${HIGHLIGHTS[i % HIGHLIGHTS.length]}${id === lastId ? ' is-new' : ''}`} x={-g.w / 2} y={-g.h / 2} width={g.w} height={g.h} rx={g.h / 2}
+            transform={`translate(${g.cx} ${g.cy}) rotate(${g.angle})`} />
         );
       })}
       {sel && <rect className="ws-select" x={-sel.w / 2} y={-sel.h / 2} width={sel.w} height={sel.h} rx={sel.h / 2} transform={`translate(${sel.cx} ${sel.cy}) rotate(${sel.angle})`} />}
@@ -276,7 +279,6 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
               }))}
               <Ink size={puzzle.size} loops={loops} selection={sel} lastId={lastId} />
             </div>
-            {done && <div className="ws-stamp" role="status">{t('ws.solved')}</div>}
           </div>
         )}
       </div>
@@ -301,15 +303,17 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
           <ol className="ws-list" aria-label={t('ch.glossary')} lang={puzzle.language_code}>
             {puzzle.words.map((w) => {
               const x = terms.get(w.term_id); const ok = found.includes(w.term_id);
+              const n = found.indexOf(w.term_id);
+              const dot = <span className={`ws-dot${ok ? ` ws-dot-${HIGHLIGHTS[n % HIGHLIGHTS.length]}` : ''}`} aria-hidden="true">{ok && <Icon name="check" size={12} />}</span>;
               const label = <span className="ws-label">{x ? tr(x.label) : w.word}</span>;
               return (
                 <li key={w.term_id} className={ok ? 'is-found' : undefined}>
-                  {ok ? <button type="button" className="ws-item" onClick={() => x && setFocus(x)}>{label}</button> : <span className="ws-item">{label}</span>}
+                  {ok ? <button type="button" className="ws-item" onClick={() => x && setFocus(x)}>{dot}{label}<span className="sr-only"> ({t('ws.found_one')})</span></button> : <span className="ws-item">{dot}{label}</span>}
                 </li>
               );
             })}
           </ol>
-          <Button variant="ghost" onClick={() => { persist(found, true); setDone(true); setFocus(null); }}>{t('ws.end')}</Button>
+          <Button variant="diagnostic" icon="check" onClick={() => { persist(found, true); setDone(true); setFocus(null); }}>{t('ws.end')}</Button>
         </>
       )}
       </div>

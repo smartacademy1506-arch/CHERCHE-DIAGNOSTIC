@@ -36,7 +36,7 @@ export function Welcome({ onDone }: { onDone: () => void }) {
   const { t, go } = useApp();
   return (
     <div className="welcome">
-      <Logo className="welcome-logo" />
+      <Logo variant="vertical" className="welcome-logo" />
       <h1>{t('onb.title')}</h1>
       <p className="lead">{t('tagline')}</p>
       <p className="muted">{t('onb.subtitle')}</p>

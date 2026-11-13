@@ -5,7 +5,7 @@ import type { Lang } from './locale';
 type Dict = Record<string, string>;
 
 const fr: Dict = {
-  'ws.solved': "RÉSOLU",
+ 
   'plans.equiv': "soit {x} par mois",
   'plans.save': "−{n} % sur l'année",
   'plans.free_title': "Ce qui reste gratuit",
@@ -17,6 +17,7 @@ const fr: Dict = {
   'ch.redflags': "Alertes",
   'ch.clinical': "Corrélations cliniques",
   'def.missing': "Définition non fournie par les auteurs.",
+  'ws.found_one': "trouvé",
   'ch.vignette': "Vignette",
   tagline: 'Apprends. Révise. Progresse.',
   'nav.home': 'Accueil', 'nav.learn': 'Apprendre', 'nav.review': 'Réviser', 'nav.stats': 'Progrès', 'nav.me': 'Profil',
@@ -75,7 +76,7 @@ const fr: Dict = {
 };
 
 const en: Dict = {
-  'ws.solved': "SOLVED",
+ 
   'plans.equiv': "just {x} a month",
   'plans.save': "Save {n}% over the year",
   'plans.free_title': "What stays free",
@@ -87,6 +88,7 @@ const en: Dict = {
   'ch.redflags': "Alerts",
   'ch.clinical': "Clinical correlations",
   'def.missing': "Definition not provided by the authors.",
+  'ws.found_one': "found",
   'ch.vignette': "Vignette",
   tagline: 'Learn. Revise. Progress.',
   'nav.home': 'Home', 'nav.learn': 'Learn', 'nav.review': 'Review', 'nav.stats': 'Progress', 'nav.me': 'Profile',
@@ -145,7 +147,7 @@ const en: Dict = {
 };
 
 const es: Dict = {
-  'ws.solved': "RESUELTO",
+ 
   'plans.equiv': "solo {x} al mes",
   'plans.save': "Ahorra un {n} % al año",
   'plans.free_title': "Lo que sigue siendo gratis",
@@ -157,6 +159,7 @@ const es: Dict = {
   'ch.redflags': "Alertas",
   'ch.clinical': "Correlaciones clínicas",
   'def.missing': "Definición no proporcionada por los autores.",
+  'ws.found_one': "encontrado",
   'ch.vignette': "Viñeta",
   tagline: 'Aprende. Repasa. Progresa.',
   'nav.home': 'Inicio', 'nav.learn': 'Aprender', 'nav.review': 'Repasar', 'nav.stats': 'Progreso', 'nav.me': 'Perfil',
@@ -215,7 +218,7 @@ const es: Dict = {
 };
 
 const zh: Dict = {
-  'ws.solved': "已完成",
+ 
   'plans.equiv': "每月仅 {x}",
   'plans.save': "全年节省 {n}%",
   'plans.free_title': "免费内容",
@@ -227,6 +230,7 @@ const zh: Dict = {
   'ch.redflags': "警示",
   'ch.clinical': "临床联系",
   'def.missing': "作者未提供定义。",
+  'ws.found_one': "已找到",
   'ch.vignette': "病例",
   tagline: '学习 · 复习 · 进步',
   'nav.home': '首页', 'nav.learn': '学习', 'nav.review': '复习', 'nav.stats': '进度', 'nav.me': '我的',
