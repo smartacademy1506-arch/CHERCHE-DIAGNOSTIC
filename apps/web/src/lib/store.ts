@@ -48,7 +48,9 @@ export async function cached<T>(key: string, fetcher: () => Promise<T>): Promise
 // ───────────── Historique local des résultats (invités et utilisateurs connectés) ─────────────
 export interface History {
   quiz: Record<string, { id: string; chapter_id: string; score: number; total: number; at: string }>;
-  puzzles: Record<string, { id: string; puzzle_id: string; chapter_id: string; found: string[]; total: number; elapsed_s: number; completed: boolean; updated_at: string }>;
+  puzzles: Record<string, { id: string; puzzle_id: string; chapter_id: string; found: string[]; total: number; elapsed_s: number; completed: boolean; updated_at: string;
+    /** Emplacement réellement entouré pour chaque mot (un mot peut figurer plusieurs fois dans une grille de livre). */
+    paths?: Record<string, [{ r: number; c: number }, { r: number; c: number }]> }>;
   cards: Record<string, { flashcard_id: string; chapter_id: string; ease: number; interval_days: number; repetitions: number; due_at: string; updated_at: string }>;
   open: Record<string, { id: string; question_id: string; chapter_id: string; answer: string; self_score: number | null; updated_at: string }>;
   lessons: Record<string, string>; // chapter_id -> date de lecture

@@ -79,10 +79,16 @@ function Ink({ size, loops, selection, lastId }: { size: number; loops: { id: st
 }
 
 export function WordSearchScreen({ id }: { id: string }) {
-  const { t, cl } = useApp();
+  const { t, tr, cl, chapters } = useApp();
   useStudyTimer('word_search', id);
+  const ch = chapters.find((c) => c.id === id);
+  useEffect(() => {
+    const prev = document.title;
+    document.title = `${t('ch.wordsearch')} — CHERCHE & DIAGNOSTIC`;
+    return () => { document.title = prev; };
+  }, [t]);
   return (
-    <ChapterFrame id={id} title={t('ch.wordsearch')}>
+    <ChapterFrame id={id} wide title={ch ? `${String(ch.sort).padStart(2, '0')} · ${tr(ch.title)}` : t('ch.wordsearch')}>
       {(b) => {
         // Grille dans la langue du contenu, sinon la grille d'origine en français (traduction en cours de validation).
         const puzzle = b.puzzles.find((p) => p.language_code === cl) ?? b.puzzles.find((p) => p.language_code === 'fr');
@@ -98,7 +104,9 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
   const resume = saved && !saved.completed ? saved : undefined;
   const sessionId = useRef(resume?.id ?? uuid());
   const [found, setFound] = useState<string[]>(resume?.found ?? []);
-  const [paths, setPaths] = useState<Record<string, Path>>({});
+  const [paths, setPaths] = useState<Record<string, Path>>(resume?.paths ?? {});
+  const pathsRef = useRef(paths); pathsRef.current = paths;
+  const [defOpen, setDefOpen] = useState(false);
   const [lastId, setLastId] = useState<string | null>(null);
   const [elapsed, setElapsed] = useState(resume?.elapsed_s ?? 0);
   const [paused, setPaused] = useState(false);
@@ -127,9 +135,9 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
   }, [loops, puzzle.size]);
   const selCells = useMemo(() => new Set(sel.map((c) => key(c.r, c.c))), [sel]);
 
-  const persist = useCallback((list: string[], completed: boolean) => {
+  const persist = useCallback((list: string[], completed: boolean, circled: Record<string, Path> = pathsRef.current) => {
     const now = new Date().toISOString();
-    const rec = { id: sessionId.current, puzzle_id: puzzle.id, chapter_id: chapterId, found: list, total, elapsed_s: elapsedRef.current, completed, updated_at: now };
+    const rec = { id: sessionId.current, puzzle_id: puzzle.id, chapter_id: chapterId, found: list, total, elapsed_s: elapsedRef.current, completed, updated_at: now, paths: circled };
     void updateHistory((h) => { h.puzzles[puzzle.id] = rec; });
     void enqueue('puzzle', { id: rec.id, puzzle_id: puzzle.id, found_term_ids: list, words_total: total, elapsed_s: rec.elapsed_s, completed, updated_at: now }, rec.id);
   }, [puzzle.id, chapterId, total]);
@@ -140,11 +148,13 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
     return () => window.clearInterval(timer);
   }, [paused, done]);
   // La définition s'efface d'elle-même pour ne pas masquer la grille.
+  useEffect(() => { setDefOpen(false); }, [focus]);
   useEffect(() => {
-    if (!focus) return;
-    const timer = window.setTimeout(() => setFocus(null), 7000);
+    if (!focus || defOpen) return;
+    const ms = Math.min(20000, Math.max(7000, tr(focus.definition).length * 70));
+    const timer = window.setTimeout(() => setFocus(null), ms);
     return () => window.clearTimeout(timer);
-  }, [focus]);
+  }, [focus, defOpen, tr]);
   // Sauvegarde périodique et en quittant l'écran : une partie interrompue se reprend là où elle s'est arrêtée.
   const foundRef = useRef(found); foundRef.current = found;
   const doneRef = useRef(done); doneRef.current = done;
@@ -160,14 +170,24 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
     const w = matchSelection(puzzle, cells, found);
     if (!w || found.includes(w.term_id)) return false;
     const next = [...found, w.term_id];
+    const circled: Record<string, Path> = { ...pathsRef.current, [w.term_id]: [cells[0], cells[cells.length - 1]] };
     setFound(next);
-    setPaths((p) => ({ ...p, [w.term_id]: [cells[0], cells[cells.length - 1]] }));
+    setPaths(circled);
     setLastId(w.term_id);
     setFocus(terms.get(w.term_id) ?? null);
     const complete = next.length === total;
-    persist(next, complete);
+    persist(next, complete, circled);
     if (complete) { setDone(true); setFocus(null); }
     return true;
+  }
+
+  function tryLine(start: Cell, end: Cell) {
+    const cells = lineCells(start, end, puzzle.size);
+    if (tryCells(cells) || cells.length < 2) return;
+    const dr = cells[1].r - cells[0].r, dc = cells[1].c - cells[0].c, last = cells[cells.length - 1];
+    const longer = { r: last.r + dr, c: last.c + dc };
+    if (cells.length > 2 && tryCells(cells.slice(0, -1))) return;
+    if (longer.r >= 0 && longer.c >= 0 && longer.r < puzzle.size && longer.c < puzzle.size) tryCells([...cells, longer]);
   }
 
   function cellAt(e: PointerEvent | { clientX: number; clientY: number }): Cell | null {
@@ -181,7 +201,7 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
     if (!tapStart) { setTapStart(cell); setSel([cell]); return; }
     const cells = lineCells(tapStart, cell, puzzle.size);
     const last = cells[cells.length - 1];
-    if (last.r === cell.r && last.c === cell.c) tryCells(cells);
+    if (last.r === cell.r && last.c === cell.c) tryLine(tapStart, cell);
     setTapStart(null); setSel([]);
   }
   const onDown = (e: PointerEvent<HTMLDivElement>) => {
@@ -199,7 +219,7 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
     if (!start) return;
     const cell = cellAt(e) ?? start;
     if (cell.r === start.r && cell.c === start.c) { tap(cell); return; }
-    tryCells(lineCells(start, cell, puzzle.size));
+    tryLine(start, cell);
     setTapStart(null); setSel([]);
   };
 
@@ -210,7 +230,7 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
 
   const missed = puzzle.words.filter((w) => !found.includes(w.term_id));
   const DefList = ({ items }: { items: Placement[] }) => (
-    <dl className="glossary">{items.map((w) => { const x = terms.get(w.term_id); return x ? <div key={w.term_id}><dt>{tr(x.label)}</dt><dd>{tr(x.definition)}</dd></div> : null; })}</dl>
+    <dl className="glossary">{items.map((w) => { const x = terms.get(w.term_id); return x ? <div key={w.term_id}><dt>{tr(x.label)}</dt><dd>{tr(x.definition) || <em className="def-missing">{t('def.missing')}</em>}</dd></div> : null; })}</dl>
   );
 
   return (
@@ -229,9 +249,13 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
       {/* Zone réservée au-dessus de la grille : consigne, puis définition du dernier mot trouvé. Hauteur fixe : la grille ne bouge pas. */}
       {!done && (
         <div className="ws-note" aria-live="polite">
-          {focus ? (
-            <div className="ws-def">
-              <p><strong>{tr(focus.label)}</strong> — {tr(focus.definition)}</p>
+          {sel.length > 1 ? (
+            <p className="ws-live" aria-hidden="true">{sel.map((c) => puzzle.grid[c.r][c.c]).join('')}</p>
+          ) : focus ? (
+            <div className={`ws-def${defOpen ? ' is-open' : ''}`}>
+              <button type="button" className="ws-def-text" aria-expanded={defOpen} onClick={() => setDefOpen((o) => !o)}>
+                <strong>{tr(focus.label)}</strong> — {tr(focus.definition) || <em className="def-missing">{t('def.missing')}</em>}
+              </button>
               <button type="button" className="icon-btn" onClick={() => setFocus(null)} aria-label={t('close')}><Icon name="x" size={18} /></button>
             </div>
           ) : <p className="ws-hint">{t('ws.hint')}</p>}
@@ -257,6 +281,7 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
         )}
       </div>
 
+      <div className="ws-side">
       {done ? (
         <div className="stack">
           <Card className="result">
@@ -273,12 +298,13 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
         </div>
       ) : (
         <>
-          <ol className="ws-list" aria-label={t('ch.glossary')}>
+          <ol className="ws-list" aria-label={t('ch.glossary')} lang={puzzle.language_code}>
             {puzzle.words.map((w) => {
               const x = terms.get(w.term_id); const ok = found.includes(w.term_id);
+              const label = <span className="ws-label">{x ? tr(x.label) : w.word}</span>;
               return (
                 <li key={w.term_id} className={ok ? 'is-found' : undefined}>
-                  <button type="button" disabled={!ok} onClick={() => x && setFocus(x)}>{x ? tr(x.label) : w.word}</button>
+                  {ok ? <button type="button" className="ws-item" onClick={() => x && setFocus(x)}>{label}</button> : <span className="ws-item">{label}</span>}
                 </li>
               );
             })}
@@ -286,6 +312,7 @@ function Game({ puzzle, bundle, chapterId }: { puzzle: PuzzleData; bundle: Chapt
           <Button variant="ghost" onClick={() => { persist(found, true); setDone(true); setFocus(null); }}>{t('ws.end')}</Button>
         </>
       )}
+      </div>
     </div>
   );
 }

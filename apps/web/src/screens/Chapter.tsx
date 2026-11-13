@@ -30,11 +30,11 @@ export function useChapter(id: string): { chapter: Chapter | undefined; load: Lo
 }
 
 /** Enveloppe commune des écrans d'un chapitre : états de chargement, d'erreur et de verrouillage. */
-export function ChapterFrame({ id, title, children }: { id: string; title?: string; children: (bundle: ChapterBundle, chapter: Chapter) => React.ReactNode }) {
+export function ChapterFrame({ id, title, wide, children }: { id: string; title?: string; wide?: boolean; children: (bundle: ChapterBundle, chapter: Chapter) => React.ReactNode }) {
   const { t, tr, go, back } = useApp();
   const { chapter, load, reload } = useChapter(id);
   return (
-    <div className="page">
+    <div className={wide ? 'page wide' : 'page'}>
       <Header title={title ?? tr(chapter?.title)} onBack={back} />
       {load.state === 'loading' && <Loader text={t('loading')} />}
       {load.state === 'error' && <><Notice kind="warn">{t('ch.unavailable')}</Notice><Button onClick={reload}>{t('retry')}</Button></>}
@@ -45,11 +45,11 @@ export function ChapterFrame({ id, title, children }: { id: string; title?: stri
 }
 
 export function ChapterHub({ id }: { id: string }) {
-  const { t, tr, go, history, cl, online, toast } = useApp();
+  const { t, tr, go, history, cl, online, toast, chapters } = useApp();
   const [downloaded, setDownloaded] = useState(false);
   const [busy, setBusy] = useState(false);
   useEffect(() => { void listDownloads().then((l) => setDownloaded(l.includes(id))); }, [id]);
-  const p = chapterProgress(history, id);
+  const p = chapterProgress(history, id, chapters.find((c) => c.id === id));
 
   return (
     <ChapterFrame id={id}>
@@ -107,7 +107,7 @@ export function Lesson({ id }: { id: string }) {
         <article className="lesson">
           {b.lesson.status !== 'published' && <Tag kind="review">{t('in_review')}</Tag>}
           <Markdown text={tr(b.lesson.summary)} />
-          {([['key', 'ch.key_points', 'keypoints'], ['pitfall', 'ch.pitfalls', 'pitfalls'], ['red_flag', 'ch.redflags', 'redflags']] as const).map(([kind, label, cls]) => {
+          {([['key', 'ch.key_points', 'keypoints'], ['pitfall', 'ch.pitfalls', 'pitfalls'], ['red_flag', 'ch.redflags', 'redflags'], ['clinical', 'ch.clinical', 'clinical']] as const).map(([kind, label, cls]) => {
             const items = b.lesson!.key_points.filter((k) => ((k as { kind?: string }).kind ?? 'key') === kind);
             return items.length > 0 && (
               <section key={kind}>
@@ -148,11 +148,11 @@ export function Glossary({ id }: { id: string }) {
   useStudyTimer('glossary', id);
   return (
     <ChapterFrame id={id} title={t('ch.glossary')}>
-      {(b) => <GlossaryList bundle={b} q={q} setQ={setQ} tr={tr} />}
+      {(b) => <GlossaryList bundle={b} q={q} setQ={setQ} tr={tr} missing={t('def.missing')} />}
     </ChapterFrame>
   );
 }
-function GlossaryList({ bundle, q, setQ, tr }: { bundle: ChapterBundle; q: string; setQ: (s: string) => void; tr: (v: any) => string }) {
+function GlossaryList({ bundle, q, setQ, tr, missing }: { bundle: ChapterBundle; q: string; setQ: (s: string) => void; tr: (v: any) => string; missing: string }) {
   const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const terms = useMemo(() => [...bundle.terms].sort((a, b) => tr(a.label).localeCompare(tr(b.label))), [bundle, tr]);
   const shown = terms.filter((x) => !q || norm(tr(x.label)).includes(norm(q)) || norm(tr(x.definition)).includes(norm(q)));
@@ -160,7 +160,7 @@ function GlossaryList({ bundle, q, setQ, tr }: { bundle: ChapterBundle; q: strin
     <>
       <input className="search" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="🔍" aria-label="Rechercher" />
       <dl className="glossary">
-        {shown.map((x) => (<div key={x.id}><dt>{tr(x.label)}</dt><dd>{tr(x.definition)}</dd></div>))}
+        {shown.map((x) => (<div key={x.id}><dt>{tr(x.label)}</dt><dd>{tr(x.definition) || <em className="def-missing">{missing}</em>}</dd></div>))}
       </dl>
     </>
   );

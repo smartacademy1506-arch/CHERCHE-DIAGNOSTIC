@@ -8,9 +8,10 @@ glossaire, QCM, questions ouvertes, flashcards et suivi de progression, en fran�
 |---|---|
 | `apps/web` | Application web installable (PWA) : React 19, TypeScript, hors ligne |
 | `supabase/migrations` | Schéma PostgreSQL, sécurité RLS, fonctions |
-| `supabase/seed` | Chapitres prêts à importer (contenu + grilles vérifiées) |
-| `content` | Contenu pédagogique source et sa spécification (`content/SPEC.md`) |
-| `tools` | Validation du contenu, génération des grilles |
+| `supabase/seed` | Chapitres prêts à importer ; `seed/books` : les huit livres de la collection, chiffrés |
+| `supabase/templates` | E-mails d'authentification aux couleurs de l'application (4 langues) |
+| `content` | Contenu pédagogique source ; le texte des livres (`content/books`) reste hors du dépôt public |
+| `tools` | Extraction et vérification des livres, import, modèles d'e-mails, éléments de marque |
 | `docs` | Audit, cartographie pédagogique, architecture, schéma, plan |
 
 Documentation : [audit](docs/06_VALIDATION/AUDIT_DOCUMENTAIRE.md) ·
@@ -18,7 +19,11 @@ Documentation : [audit](docs/06_VALIDATION/AUDIT_DOCUMENTAIRE.md) ·
 [architecture et coûts](docs/04_ARCHITECTURE/ARCHITECTURE_TECHNIQUE.md) ·
 [base de données](docs/04_ARCHITECTURE/SCHEMA_BASE_DONNEES.md) ·
 [plan et état d'avancement](docs/04_ARCHITECTURE/PLAN_DEVELOPPEMENT.md) ·
-[revues indépendantes](docs/06_VALIDATION/REVUES_INDEPENDANTES.md)
+[revues indépendantes](docs/06_VALIDATION/REVUES_INDEPENDANTES.md) ·
+[service e-mail](docs/04_ARCHITECTURE/SERVICE_EMAIL.md) ·
+[produit](PRODUCT.md) · [design system](DESIGN.md) ·
+[import des livres](supabase/seed/books/README.md)
 
-Le contenu médical actuel est provisoire et en cours de validation pédagogique. L'application est un outil
+Le contenu vient des huit livres de la collection CHERCHE ET DIAGNOSTIQUE (149 chapitres, 8 940 termes,
+149 grilles) ; il est en cours de validation pédagogique. L'application est un outil
 d'apprentissage, pas un dispositif de diagnostic.

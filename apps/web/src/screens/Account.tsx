@@ -6,7 +6,7 @@ import { formatPrice, localAmount } from '../lib/pricing';
 import { flushOutbox, outboxCount } from '../lib/store';
 import { auth, db } from '../lib/supabase';
 import { APP_VERSION } from '../lib/config';
-import { Button, Card, Circled, Header, Icon, Loader, Notice, Tag } from '../ui';
+import { Button, Card, Circled, Header, Icon, Loader, Notice } from '../ui';
 import { LangCountryPickers } from './Auth';
 
 export function Plans() {
@@ -61,7 +61,6 @@ export function Plans() {
             <article key={p.id} className={`card plan${p.is_featured ? ' plan-featured' : ''}`}>
               <div className="row wrap" style={{ justifyContent: 'space-between' }}>
                 <h2>{p.name[lang] ?? p.name.en}</h2>
-                {p.is_featured && <Tag kind="premium">{t('plans.best')}</Tag>}
               </div>
               <p className="price" data-testid={`price-${p.code}`}>{formatPrice(amount, cur, lang)}</p>
               <p className="per">

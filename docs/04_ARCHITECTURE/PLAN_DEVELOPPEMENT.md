@@ -1,4 +1,4 @@
-# Plan de développement — état au 11 novembre 2026
+# Plan de développement — état au 13 novembre 2026
 
 Légende : ✅ fait et testé · 🟡 fait, test incomplet · ⬜ non fait
 
@@ -8,7 +8,7 @@ Légende : ✅ fait et testé · 🟡 fait, test incomplet · ⬜ non fait
 | 2. Architecture | ✅ | ce dossier |
 | 3. Dépôt et application | ✅ | `apps/web`, branche `claude/mvp` |
 | 4. Base et authentification | 🟡 | Schéma, RLS et fonctions appliqués. Inscription, connexion, réinitialisation : écrans faits, **non testés contre le vrai Supabase** (pas d'accès réseau depuis l'environnement de test). |
-| 5. Import des contenus | ✅ | `tools/build-payloads.ts` + `admin_import_chapter` ; 4 chapitres importés, 8 grilles vérifiées par la base. |
+| 5. Import des contenus | ✅ | Huit livres extraits (`tools/books/`), revérifiés, importés via `admin_import_chapter` : 149 chapitres, 8 940 termes, 149 grilles validées par la base, 386 vignettes corrigées, 1 192 questions de révision. Chapitre 1 de chaque livre gratuit. Les 4 chapitres de physiologie rédigés par IA sont archivés. Voir `supabase/seed/books/README.md`. |
 | 6. Catalogue, cours, glossaire | ✅ | Testés de bout en bout. |
 | 7. Mots mêlés | ✅ | 7 tests du moteur, 3 scénarios de bout en bout (glisser, toucher début/fin, reprise). Non testé sur de vrais téléphones. |
 | 8. QCM et questions ouvertes | ✅ | Correction serveur ; scénarios de bout en bout avec un faux serveur. Examens blancs multi-chapitres : ⬜. |
@@ -17,7 +17,9 @@ Légende : ✅ fait et testé · 🟡 fait, test incomplet · ⬜ non fait
 | 11. Administration | 🟡 | Statistiques, statuts, import, glossaire, offres, devises, utilisateurs, rôles, paiements : écrans faits, **non testés avec un compte administrateur réel**. Édition des QCM, médias, programmes : ⬜. |
 | 12. Abonnements et paiements | 🟡 | Offres, devises, demande de paiement, confirmation manuelle. Prestataire de paiement : ⬜. |
 | 13. IA pédagogique | ⬜ | Non commencé (l'application n'en dépend pas). |
-| 14. Tests, optimisation, déploiement | 🟡 | 7 tests du moteur et 15 scénarios de bout en bout réussis. Revues médicale et de sécurité indépendantes faites (docs/06_VALIDATION/REVUES_INDEPENDANTES.md). Déployé sur Vercel. Test de charge : ⬜. |
+| 15. Design system | ✅ | Tiré du logo fourni : `PRODUCT.md`, `DESIGN.md`, `apps/web/src/styles.css`. Grille « page de jeux » entourée au stylo. |
+| 16. Service e-mail | 🟡 | Modèles prêts (`supabase/templates`) ; SMTP à saisir dans Supabase : `docs/04_ARCHITECTURE/SERVICE_EMAIL.md`. |
+| 14. Tests, optimisation, déploiement | 🟡 | 7 tests du moteur et 16 scénarios de bout en bout réussis. Revues médicale et de sécurité indépendantes faites (docs/06_VALIDATION/REVUES_INDEPENDANTES.md). Déployé sur Vercel. Test de charge : ⬜. |
 
 ## Non fait dans ce MVP
 

@@ -5,7 +5,12 @@ import type { Placement } from './wordsearch/generator';
 
 export type I18n = Record<string, string>;
 export interface Discipline { id: string; slug: string; title: I18n; description: I18n; icon: string; sort: number; status: string }
-export interface Chapter { id: string; discipline_id: string; slug: string; title: I18n; description: I18n; sort: number; is_free: boolean; status: string; content_version: number }
+export interface Chapter {
+  id: string; discipline_id: string; slug: string; title: I18n; description: I18n; sort: number; is_free: boolean; status: string; content_version: number;
+  /** Nombre de QCM et de questions ouvertes visibles (inconnu pour un chapitre verrouillé ou un catalogue ancien). */
+  quiz_count?: number; open_count?: number;
+}
+type ChapterRow = Chapter & { quiz_questions?: { count: number }[]; open_questions?: { count: number }[] };
 export interface Term { id: string; label: I18n; definition: I18n }
 export interface PuzzleData { id: string; language_code: string; size: number; grid: string[]; words: (Placement & { term_id: string })[] }
 export interface Question { id: string; type: 'single' | 'multiple'; difficulty: number; stem: I18n; options: { id: string; label: I18n }[] }
@@ -25,10 +30,13 @@ export interface ChapterBundle {
 }
 
 export const loadCatalog = () => cached('catalog', async () => {
-  const [disciplines, chapters] = await Promise.all([
-    db.select<Discipline>('disciplines', 'select=id,slug,title,description,icon,sort,status&order=sort'),
-    db.select<Chapter>('chapters', 'select=id,discipline_id,slug,title,description,sort,is_free,status,content_version&order=sort'),
+  const [disciplines, rows] = await Promise.all([
+    db.select<Discipline>('disciplines', 'select=id,slug,title,description,icon,sort,status&status=neq.archived&order=sort'),
+    db.select<ChapterRow>('chapters', 'select=id,discipline_id,slug,title,description,sort,is_free,status,content_version,quiz_questions(count),open_questions(count)&status=neq.archived&order=sort'),
   ]);
+  const chapters: Chapter[] = rows.map(({ quiz_questions, open_questions, ...c }) => ({
+    ...c, quiz_count: quiz_questions?.[0]?.count ?? c.quiz_count, open_count: open_questions?.[0]?.count ?? c.open_count,
+  }));
   return { disciplines, chapters };
 });
 

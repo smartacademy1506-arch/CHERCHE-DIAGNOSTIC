@@ -26,6 +26,9 @@ const ICONS: Record<string, string> = {
   alert: 'M12 9v4M12 17h.01M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z',
   shield: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z',
   pulse: 'M2 12h4l3-8 4 16 3-8h6',
+  bone: 'M17 3a3 3 0 00-2.8 4.1l-7.1 7.1A3 3 0 103 17a3 3 0 104 4 3 3 0 002.8-4.1l7.1-7.1A3 3 0 1021 7a3 3 0 10-4-4z',
+  pill: 'M10.5 3.5a5 5 0 017 7l-7 7a5 5 0 01-7-7zM7 10l7 7',
+  stethoscope: 'M6 3v6a4 4 0 008 0V3M10 13v3a5 5 0 0010 0v-3M20 13a2 2 0 100-4 2 2 0 000 4z',
 };
 
 export function Icon({ name, size = 20 }: { name: string; size?: number }) {

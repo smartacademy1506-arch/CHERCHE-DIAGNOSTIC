@@ -108,6 +108,12 @@ const expectCount = async (page, n, total) => { await page.locator('.ws-count').
 const { page, errors } = await newPage({ width: 390, height: 844 });
 const free = chapters[0];
 const puzzle = free.word_search_puzzles.find((p) => p.language_code === 'fr');
+// Cas réels des livres : un terme sans définition (sa fiche n'existe pas) et un libellé très long.
+const noDefTerm = free.medical_terms.find((t) => t.id === puzzle.puzzle_words[10].term_id);
+noDefTerm.glossary_entries.definition = {};
+free.flashcards = free.flashcards.filter((f) => f.front !== noDefTerm.label);
+const longTerm = free.medical_terms.find((t) => t.id === puzzle.puzzle_words[39].term_id);
+longTerm.label = { fr: 'ARTÈRE INTERVENTRICULAIRE ANTÉRIEURE', en: 'ANTERIOR INTERVENTRICULAR ARTERY' };
 
 await step('accueil : choix de langue et de pays, puis tableau de bord', async () => {
   await page.goto(base);
@@ -301,6 +307,22 @@ await step('rendu : plusieurs mots entourés au stylo sur un téléphone de 360 
   await v.page.getByTestId('ws-grid').waitFor();
   for (const w of puzzle.puzzle_words.slice(0, 9)) await dragWord(v.page, w);
   await expectCount(v.page, 9, puzzle.puzzle_words.length);
+  // tolérance : relâcher une case avant la fin du mot le valide quand même
+  const w9 = puzzle.puzzle_words[9], n9 = w9.word.length;
+  const a9 = await cellCenter(v.page, w9.start_row, w9.start_col);
+  const b9 = await cellCenter(v.page, w9.start_row + (n9 - 2) * w9.d_row, w9.start_col + (n9 - 2) * w9.d_col);
+  await v.page.mouse.move(a9.x, a9.y); await v.page.mouse.down(); await v.page.mouse.move(b9.x, b9.y); await v.page.mouse.up();
+  await expectCount(v.page, 10, puzzle.puzzle_words.length);
+  // un terme que le livre ne définit pas : mention explicite, aucun texte inventé
+  await dragWord(v.page, puzzle.puzzle_words[10]);
+  await expectCount(v.page, 11, puzzle.puzzle_words.length);
+  await expectText(v.page, 'Définition non fournie par les auteurs');
+  // aucun libellé de la liste ne déborde de sa colonne, même le plus long
+  const overflow = await v.page.$$eval('ol.ws-list .ws-item', (els) => els.filter((e) => e.scrollWidth > e.clientWidth + 1).map((e) => e.textContent));
+  if (overflow.length) throw new Error(`libellés qui débordent : ${overflow.join(', ')}`);
+  const pageOverflow = await v.page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  if (pageOverflow > 0) throw new Error(`la page déborde de ${pageOverflow} px`);
+  await expectCount(v.page, 11, puzzle.puzzle_words.length);
   await v.page.waitForTimeout(800);
   await v.page.screenshot({ path: join(shots, '15-grille-entouree.png') });
   if (v.errors.length) throw new Error(v.errors[0]);
