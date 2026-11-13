@@ -26,6 +26,9 @@ const ICONS: Record<string, string> = {
   alert: 'M12 9v4M12 17h.01M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z',
   shield: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z',
   pulse: 'M2 12h4l3-8 4 16 3-8h6',
+  sun: 'M12 16a4 4 0 100-8 4 4 0 000 8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4',
+  moon: 'M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z',
+  monitor: 'M3 5h18v11H3zM8 20h8M12 16v4',
   bone: 'M17 3a3 3 0 00-2.8 4.1l-7.1 7.1A3 3 0 103 17a3 3 0 104 4 3 3 0 002.8-4.1l7.1-7.1A3 3 0 1021 7a3 3 0 10-4-4z',
   pill: 'M10.5 3.5a5 5 0 017 7l-7 7a5 5 0 01-7-7zM7 10l7 7',
   stethoscope: 'M6 3v6a4 4 0 008 0V3M10 13v3a5 5 0 0010 0v-3M20 13a2 2 0 100-4 2 2 0 000 4z',
@@ -70,11 +73,12 @@ export function Ring({ value, label }: { value: number; size?: number; label?: s
 export function Logo({ variant = 'horizontal', className }: { variant?: 'horizontal' | 'vertical' | 'symbole'; className?: string }) {
   if (variant === 'vertical') return <img src="/brand/logo-vertical.svg" alt="Cherche & Diagnostic" width={1089} height={1146} className={className} />;
   if (variant === 'symbole') return <img src="/brand/symbole.svg" alt="Cherche & Diagnostic" width={814} height={747} className={className} />;
+  // Les deux versions sont dans la page ; la feuille de style montre celle du thème affiché (choisi ou système).
   return (
-    <picture className={className}>
-      <source srcSet="/brand/logo-horizontal-inverse.svg" media="(prefers-color-scheme: dark)" />
-      <img src="/brand/logo-horizontal.svg" alt="Cherche & Diagnostic" width={887} height={240} />
-    </picture>
+    <span className={`logo${className ? ` ${className}` : ''}`}>
+      <img className="logo-clair" src="/brand/logo-horizontal.svg" alt="Cherche & Diagnostic" width={887} height={240} />
+      <img className="logo-sombre" src="/brand/logo-horizontal-inverse.svg" alt="Cherche & Diagnostic" width={887} height={240} />
+    </span>
   );
 }
 

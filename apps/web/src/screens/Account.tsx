@@ -7,6 +7,7 @@ import { flushOutbox, outboxCount } from '../lib/store';
 import { auth, db } from '../lib/supabase';
 import { APP_VERSION } from '../lib/config';
 import { Badge, Button, Card, Header, Icon, Loader, Notice } from '../ui';
+import { readTheme, saveTheme, type ThemeChoice } from '../lib/theme';
 import { LangCountryPickers } from './Auth';
 
 export function Plans() {
@@ -90,6 +91,27 @@ export function Plans() {
   );
 }
 
+/** Choix du thème : système (réglage de l'appareil), clair ou sombre. Boutons radio natifs (flèches du clavier comprises). */
+function ThemePicker() {
+  const { t } = useApp();
+  const [choice, setChoice] = useState<ThemeChoice>(readTheme);
+  const options: [ThemeChoice, string, string][] = [['system', t('theme.system'), 'monitor'], ['light', t('theme.light'), 'sun'], ['dark', t('theme.dark'), 'moon']];
+  return (
+    <fieldset className="theme-picker">
+      <legend>{t('theme.title')}</legend>
+      <div className="segmented">
+        {options.map(([value, label, icon]) => (
+          <label key={value} className={`segment${choice === value ? ' is-on' : ''}`}>
+            <input type="radio" name="theme" value={value} checked={choice === value} onChange={() => { saveTheme(value); setChoice(value); }} />
+            <Icon name={icon} size={18} />
+            <span>{label}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
 export function Settings() {
   const { t, tr, go, session, profile, access, chapters, refreshAccount, toast, online } = useApp();
   const [form, setForm] = useState({ full_name: '', study_field: '', study_level: '', daily_goal_minutes: 20 });
@@ -141,6 +163,7 @@ export function Settings() {
       )}
 
       <Card><LangCountryPickers /></Card>
+      <Card><ThemePicker /></Card>
 
       <Card onClick={() => go('plans')} className="row">
         <span className="disc-icon"><Icon name="star" /></span>

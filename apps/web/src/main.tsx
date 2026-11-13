@@ -1,6 +1,7 @@
 import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { AppProvider, Shell, useApp } from './app';
+import { initTheme } from './lib/theme';
 import './styles.css';
 import { Plans, Settings } from './screens/Account';
 import { Admin } from './screens/Admin';
@@ -45,6 +46,7 @@ function Root() {
   return <Shell><Routes /></Shell>;
 }
 
+initTheme();
 createRoot(document.getElementById('root')!).render(<StrictMode><AppProvider><Root /></AppProvider></StrictMode>);
 
 if ('serviceWorker' in navigator && location.protocol === 'https:') {

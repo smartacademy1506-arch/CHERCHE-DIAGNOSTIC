@@ -12,8 +12,13 @@ pour le geste médical ; aplats, Poppins seule, formes arrondies comme le C et l
 
 ## Couleur
 
-Tous les tokens sont des variables CSS dans `apps/web/src/styles.css` (`:root`), avec le thème sombre dans
-`@media (prefers-color-scheme: dark)`. Les composants n'emploient que les tokens sémantiques.
+Tous les tokens sont des variables CSS dans `apps/web/src/styles.css` (`:root`). Les composants n'emploient que
+les tokens sémantiques.
+
+Thème : l'utilisateur choisit « Système », « Clair » ou « Sombre » dans Profil → Apparence (`lib/theme.ts`). Le
+choix est propre à l'appareil (clé locale `cd.theme`, absente pour « Système ») et posé en `data-theme` sur
+`<html>` ; sans attribut, `prefers-color-scheme` décide. Le logo (versions claire et inverse) et la couleur de la
+barre du navigateur suivent le thème affiché.
 
 | Token | Clair | Sombre | Emploi |
 |---|---|---|---|

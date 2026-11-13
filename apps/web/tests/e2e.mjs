@@ -344,6 +344,40 @@ await step('rendu : thème sombre du design system (accueil et grille)', async (
   if (v.errors.length) throw new Error(v.errors[0]);
 });
 
+await step('thème : système, clair ou sombre, choisi dans le profil et mémorisé', async () => {
+  const v = await newPage({ width: 390, height: 844 }, 'fr-FR', 'dark');
+  const fond = () => v.page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  const barre = () => v.page.evaluate(() => document.querySelector('meta[name="theme-color"]').getAttribute('content'));
+  const SOMBRE = 'rgb(0, 17, 43)', CLAIR = 'rgb(244, 248, 253)';
+  await v.page.goto(base);
+  await v.page.getByRole('button', { name: 'Commencer' }).click();
+  await v.page.goto(`${base}/#/me`);
+  await v.page.getByRole('group', { name: 'Apparence' }).waitFor();
+  if (!(await v.page.getByRole('radio', { name: 'Système' }).isChecked())) throw new Error('« Système » doit être le choix par défaut');
+  if ((await fond()) !== SOMBRE) throw new Error('appareil en sombre : le fond doit être sombre');
+  await v.page.getByRole('radio', { name: 'Clair' }).check();
+  if ((await fond()) !== CLAIR) throw new Error(`thème clair forcé attendu, obtenu ${await fond()}`);
+  if ((await barre()) !== '#012d69') throw new Error('la barre du navigateur doit suivre le thème clair');
+  if (!(await v.page.getByRole('img', { name: 'Cherche & Diagnostic' }).first().getAttribute('src')).endsWith('logo-horizontal.svg')) throw new Error('logo clair attendu');
+  await v.page.reload();
+  await v.page.getByRole('group', { name: 'Apparence' }).waitFor();
+  if ((await fond()) !== CLAIR || !(await v.page.getByRole('radio', { name: 'Clair' }).isChecked())) throw new Error('le choix « Clair » doit survivre au rechargement');
+  await v.page.waitForTimeout(300);
+  await v.page.screenshot({ path: join(shots, '18-theme-clair-force.png') });
+  await v.page.emulateMedia({ colorScheme: 'light' });
+  await v.page.getByRole('radio', { name: 'Sombre' }).check();
+  if ((await fond()) !== SOMBRE) throw new Error('thème sombre forcé sur un appareil clair : fond sombre attendu');
+  if ((await barre()) !== '#00112b') throw new Error('la barre du navigateur doit suivre le thème sombre');
+  const logo = v.page.getByRole('img', { name: 'Cherche & Diagnostic' }).first();
+  if (!(await logo.getAttribute('src')).endsWith('logo-horizontal-inverse.svg')) throw new Error('logo inverse attendu en thème sombre');
+  await v.page.waitForTimeout(300);
+  await v.page.screenshot({ path: join(shots, '19-theme-sombre-force.png') });
+  await v.page.getByRole('radio', { name: 'Système' }).check();
+  if ((await fond()) !== CLAIR) throw new Error('retour à l’appareil (clair) : fond clair attendu');
+  if (await v.page.evaluate(() => localStorage.getItem('cd.theme')) !== null) throw new Error('« Système » ne doit rien mémoriser');
+  if (v.errors.length) throw new Error(v.errors[0]);
+});
+
 await step('aucune erreur JavaScript pendant les scénarios', async () => {
   const all = [...errors, ...desk.errors];
   if (all.length) throw new Error(all.slice(0, 3).join(' | '));
