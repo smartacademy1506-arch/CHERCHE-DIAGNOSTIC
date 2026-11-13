@@ -4,3 +4,8 @@ dist
 .env.local
 *.log
 apps/web/tests/screenshots
+
+# Texte des livres de la collection : contenu payant, jamais en clair dans ce dépôt public.
+# Les charges d'import chiffrées sont dans supabase/seed/books/.
+content/books/*
+!content/books/README.md

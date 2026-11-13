@@ -1,0 +1,58 @@
+[
+ {
+  "book": "physiologie-generale",
+  "discipline": "physiologie",
+  "chapters": 16,
+  "terms": 960,
+  "empty_definitions": 0
+ },
+ {
+  "book": "anatomie-osteologie",
+  "discipline": "anatomie-osteologie",
+  "chapters": 11,
+  "terms": 660,
+  "empty_definitions": 0
+ },
+ {
+  "book": "anatomie-myologie",
+  "discipline": "anatomie-myologie",
+  "chapters": 11,
+  "terms": 660,
+  "empty_definitions": 0
+ },
+ {
+  "book": "anatomie-innervation",
+  "discipline": "anatomie-innervation",
+  "chapters": 12,
+  "terms": 720,
+  "empty_definitions": 0
+ },
+ {
+  "book": "anatomie-vascularisation",
+  "discipline": "anatomie-vascularisation",
+  "chapters": 20,
+  "terms": 1200,
+  "empty_definitions": 4
+ },
+ {
+  "book": "anatomie-organes",
+  "discipline": "anatomie-organes",
+  "chapters": 21,
+  "terms": 1260,
+  "empty_definitions": 3
+ },
+ {
+  "book": "pharmacologie",
+  "discipline": "pharmacologie",
+  "chapters": 37,
+  "terms": 2220,
+  "empty_definitions": 31
+ },
+ {
+  "book": "semiologie",
+  "discipline": "semiologie",
+  "chapters": 21,
+  "terms": 1260,
+  "empty_definitions": 0
+ }
+]
