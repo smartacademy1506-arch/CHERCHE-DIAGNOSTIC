@@ -298,7 +298,7 @@ ol.ws-list .is-found .ws-label { color: var(--ink-2); text-decoration: line-thro
 .plan-featured { background: var(--navy); color: #fff; }
 .plan-featured h2, .plan-featured .price { color: #fff; }
 .plan-featured .muted, .plan-featured .per { color: #c9d8e8; }
-.plan-featured ul.bullets li::marker { color: #ff8a8b; }
+.plan-featured ul.bullets li::marker { color: rgba(255, 255, 255, .75); }
 .plan-featured .tag-premium { color: #fff; border-color: rgba(255, 255, 255, .55); background: transparent; }
 .plan .btn { margin-top: auto; }
 .plan-featured .btn-primary { background: #fff; color: var(--navy); } .plan-featured .btn-primary:hover { background: var(--navy-tint); }
