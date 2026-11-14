@@ -35,3 +35,18 @@ done
 La base télécharge chaque fichier depuis GitHub (extension `http`), le déchiffre avec la clé du Vault
 (`pgcrypto`) et appelle `admin_import_chapter`. Tout le contenu entre « in_review » ; le chapitre 1 de chaque
 livre est gratuit. Une grille invalide annule l'import du livre entier.
+
+3. Relancer ensuite `apply_corrections.sql` (même remplacement de `__REF__`) : un réimport efface les corrections.
+
+## Corrections validées par les auteurs
+
+`corrections-2026-11-14.asc` contient, chiffrées avec la même clé, les 49 définitions validées par les auteurs
+le 14 novembre 2026 (détail : `docs/06_VALIDATION/VALIDATION_AUTEURS_2026-11-14.md`) :
+
+- 38 mots dont le livre ne reliait pas la définition : chacun est rattaché à l'entrée de son glossaire et affiche la
+  définition originale du livre ;
+- 11 définitions corrigées, chacune avec ses sources.
+
+`apply_corrections.sql` met à jour la définition et la fiche de révision de chaque mot (la fiche est créée si elle
+manquait), conserve l'état antérieur dans `content_versions` et incrémente la version du chapitre. Depuis ces
+corrections, plus aucun mot des grilles n'est sans définition.
